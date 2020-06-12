@@ -31,7 +31,7 @@ namespace UI.Pages
             if (dialog.ShowDialog() == true)
             {
                 var preparer = new FilePreparer();
-                preparer.ReadFile(dialog.FileName);
+                IOResult measures = preparer.ReadFile(dialog.FileName);
             }
         }
     }

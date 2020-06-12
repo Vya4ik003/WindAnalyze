@@ -4,7 +4,7 @@ using System.Text;
 
 namespace IO
 {
-    struct Measure
+    public struct Measure
     {
         /// <summary>
         /// Дата измерения

@@ -1,7 +1,8 @@
 ﻿using ExcelDataReader;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
-using System.Linq.Expressions;
 
 namespace IO
 {
@@ -11,33 +12,42 @@ namespace IO
         /// Чтение файла и получение IEnumerable
         /// </summary>
         /// <param name="filePath">Путь к файлу</param>
-        public void ReadFile(string filePath)
+        public IOResult ReadFile(string filePath)
         {
-            using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
+            var resultMessages = JObject.Parse(File.ReadAllText("ResultMessages.json"));
+
+            FileStream stream;
+            try
             {
-                using (var reader = ExcelReaderFactory.CreateReader(stream))
-                {
-                    //if (reader.)
-                    reader.Read();
-                    var firstCell = reader.GetString(0);
-                    var rowCount = IsContainsInfo(firstCell) ? reader.RowCount - 7 : HasHeaders(firstCell) ? reader.RowCount - 1 : reader.RowCount;
-
-                    SkipRows(reader);
-
-                    Measure[] measures = new Measure[rowCount];
-
-                    int currentRow = 0;
-                    do
-                    {
-                        string measureDate = reader.GetString(0);
-                        string ddColumn = reader.GetString(6);
-                        measures[currentRow] = new Measure(measureDate, ddColumn);
-
-                        currentRow++;
-                    }
-                    while (reader.Read());
-                }
+                stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
             }
+            catch (IOException)
+            {
+                return new IOResult(message: resultMessages["IOexception"].ToString());
+            }
+            using var reader = ExcelReaderFactory.CreateReader(stream);
+
+
+            reader.Read();
+            var firstCell = reader.GetString(0);
+            var rowCount = IsContainsInfo(firstCell) ? reader.RowCount - 7 : HasHeaders(firstCell) ? reader.RowCount - 1 : reader.RowCount;
+
+            SkipRows(reader);
+
+            Measure[] measures = new Measure[rowCount];
+
+            int currentRow = 0;
+            do
+            {
+                string measureDate = reader.GetString(0);
+                string ddColumn = reader.GetString(6);
+                measures[currentRow] = new Measure(measureDate, ddColumn);
+
+                currentRow++;
+            }
+            while (reader.Read());
+
+            return new IOResult(measures: measures, message: resultMessages["Success"].ToString());
         }
 
         //TODO: Продвинутое чтение информации
@@ -53,13 +63,6 @@ namespace IO
 
         private void SkipRows(IExcelDataReader reader)
         {
-            //while (!DateTime.TryParse(date, out _))
-            //{
-            //    reader.Read();
-            //    date = reader.GetString(0);
-            //}
-
-            //do
             while (!DateTime.TryParse(reader.GetString(0), out _))
             {
                 reader.Read();
