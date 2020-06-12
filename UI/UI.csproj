@@ -6,4 +6,9 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Buisness\Buisness.csproj" />
+    <ProjectReference Include="..\IO\IO.csproj" />
+  </ItemGroup>
+
 </Project>
