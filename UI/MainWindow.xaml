@@ -6,7 +6,23 @@
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+
+    <Window.Resources>
+        <Style x:Key="FrameContainer" TargetType="Frame">
+            <Setter Property="NavigationUIVisibility" Value="Hidden"/>
+        </Style>
+    </Window.Resources>
+    
     <Grid>
-        <Frame Content="{Binding CurrentPage}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Frame x:Name="LeftFrame" Style="{StaticResource FrameContainer}" Content="{Binding CurrentLeftPage}" Grid.Column="0"/>
+        <Frame x:Name="CenterFrame" Style="{StaticResource FrameContainer}" Content="{Binding CurrentCenterPage}" Grid.Column="1"/>
+        <Frame x:Name="RightFrame" Style="{StaticResource FrameContainer}" Content="{Binding CurrentRightPage}" Grid.Column="2"/>
+        
     </Grid>
 </Window>

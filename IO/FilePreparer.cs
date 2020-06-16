@@ -12,10 +12,8 @@ namespace IO
         /// Чтение файла и получение IEnumerable
         /// </summary>
         /// <param name="filePath">Путь к файлу</param>
-        public IOResult ReadFile(string filePath)
+        public IOResult ReadFile(string filePath, JObject messages)
         {
-            var resultMessages = JObject.Parse(File.ReadAllText("ResultMessages.json"));
-
             FileStream stream;
             try
             {
@@ -23,7 +21,7 @@ namespace IO
             }
             catch (IOException)
             {
-                return new IOResult(message: resultMessages["IOexception"].ToString());
+                return new IOResult(message: messages["IOexception"].ToString());
             }
             using var reader = ExcelReaderFactory.CreateReader(stream);
 
@@ -47,7 +45,7 @@ namespace IO
             }
             while (reader.Read());
 
-            return new IOResult(measures: measures, message: resultMessages["Success"].ToString());
+            return new IOResult(measures: measures, message: messages["Success"].ToString());
         }
 
         //TODO: Продвинутое чтение информации

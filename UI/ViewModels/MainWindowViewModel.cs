@@ -1,29 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Windows;
 using System.Windows.Controls;
-using UI.Pages;
+using UI.Pages.CenterPages;
 
 namespace UI.ViewModels
 {
-    class MainWindowViewModel : BaseViewModel
+    internal class MainWindowViewModel : BaseViewModel
     {
-        public MainWindowViewModel()
+        internal AnalyzeCenterPage AnalyzePage;
+
+        internal MainWindowViewModel()
         {
-            CurrentPage = new StartPage();
+            AnalyzePage = new AnalyzeCenterPage(this);
+
+            CurrentCenterPage = new StartCenterPage(this);
         }
 
-        private Page _currentPage;
-        public Page CurrentPage
+        private Page _currentCenterPage;
+        public Page CurrentCenterPage
         {
             get
             {
-                return _currentPage;
+                return _currentCenterPage;
             }
             set
             {
-                _currentPage = value;
-                OnPropertyCHanged();
+                _currentCenterPage = value;
+                OnPropertyChanged();
             }
         }
     }

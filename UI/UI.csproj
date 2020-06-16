@@ -11,4 +11,9 @@
     <ProjectReference Include="..\IO\IO.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\LeftPages\" />
+    <Folder Include="Pages\RightPages\" />
+  </ItemGroup>
+
 </Project>

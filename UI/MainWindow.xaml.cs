@@ -16,6 +16,7 @@ namespace UI
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
+            //TODO: При возможности изменить на "DataContext = new MainWindowViewModel()"
             _mainWindowViewModel = new MainWindowViewModel();
 
             DataContext = _mainWindowViewModel;

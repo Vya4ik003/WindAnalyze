@@ -9,7 +9,7 @@ namespace UI.ViewModels
     abstract class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyCHanged([CallerMemberName] string callerPropertyName = "")
+        protected void OnPropertyChanged([CallerMemberName] string callerPropertyName = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(callerPropertyName));
