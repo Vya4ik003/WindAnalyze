@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -17,18 +18,24 @@ namespace IO
         public string Message { get; set; }
 
         /// <summary>
-        /// Инициализирует новый обьект класса Result, если не возникло исключения
+        /// Информация, взятая с первых 6 строк файла
+        /// </summary>
+        public IDictionary<string, string> HeaderRowsInfo { get; set; }
+
+        /// <summary>
+        /// Инициализирует новый обьект класса Result, если не возникло исключения при открытии файла
         /// </summary>
         /// <param name="measures">Массив измерений</param>
         /// <param name="message">Сообщение</param>
-        public IOResult(Measure[] measures, string message)
+        public IOResult(Measure[] measures, JToken message, IDictionary<string, string> infoFromHeaderRows)
         {
             Measures = measures;
-            Message = message;
+            Message = message.ToString();
+            HeaderRowsInfo = infoFromHeaderRows;
         }
 
         /// <summary>
-        /// Инициализирует новый обьект класса Result, если возникло исключение
+        /// Инициализирует новый обьект класса Result, если возникло исключение при открытии файла
         /// </summary>
         /// <param name="message">Сообщение</param>
         public IOResult(string message)

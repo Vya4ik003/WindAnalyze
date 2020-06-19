@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,28 +21,15 @@ namespace UI.Pages.CenterPages
     /// </summary>
     public partial class AnalyzeCenterPage : Page
     {
-        internal AnalyzeCenterPage(MainWindowViewModel mainViewModel)
+        private MainWindowViewModel _mainViewModel;
+        private IOResult _readResult;
+
+        internal AnalyzeCenterPage(MainWindowViewModel mainViewModel, IOResult result)
         {
             InitializeComponent();
 
-            CreateHeaders(10);
-        }
-
-        private void CreateHeaders(int count)
-        {
-            //TestDataGrid.RowHeaderWidth = 100;
-            int[] texts = new int[count];
-
-            for(int i = 0; i < count; i++)
-            {
-                texts[i] = i;
-
-                TestDataGrid.Columns.Add(new DataGridTextColumn() { Header = i});
-
-                TestDataGrid.RowHeaderStyle = new Style();
-            }
-
-            TestDataGrid.ItemsSource = texts;
+            _mainViewModel = mainViewModel;
+            _readResult = result;
         }
     }
 }

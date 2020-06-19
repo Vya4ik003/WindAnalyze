@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using UI.ViewModels;
 
@@ -20,6 +22,8 @@ namespace UI
             _mainWindowViewModel = new MainWindowViewModel();
 
             DataContext = _mainWindowViewModel;
+
+
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using IO;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using UI.Pages.CenterPages;
 
@@ -6,12 +8,8 @@ namespace UI.ViewModels
 {
     internal class MainWindowViewModel : BaseViewModel
     {
-        internal AnalyzeCenterPage AnalyzePage;
-
         internal MainWindowViewModel()
         {
-            AnalyzePage = new AnalyzeCenterPage(this);
-
             CurrentCenterPage = new StartCenterPage(this);
         }
 

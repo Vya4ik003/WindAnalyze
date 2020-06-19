@@ -19,13 +19,15 @@ namespace UI.Pages.CenterPages
         }
 
         //TODO: Сделать асинхронное чтение
-        //TODO: Сделать окно с сообщением
+        //TODO: Сделать окно с сообщением о загрузке
         private void OpenFile_Click(object sender, RoutedEventArgs e)
         {
             FileWorker fileWorker = new FileWorker();
+
             IOResult result = fileWorker.OpenFile();
 
-            _mainWindowViewModel.CurrentCenterPage = _mainWindowViewModel.AnalyzePage;
+            if (result.Message != "Null")
+                _mainWindowViewModel.CurrentCenterPage = new AnalyzeCenterPage(_mainWindowViewModel, result);
         }
     }
 }

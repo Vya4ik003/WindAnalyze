@@ -7,13 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Buisness\Buisness.csproj" />
-    <ProjectReference Include="..\IO\IO.csproj" />
+    <Compile Remove="Pages\LeftPages\**" />
+    <Compile Remove="Pages\RightPages\**" />
+    <EmbeddedResource Remove="Pages\LeftPages\**" />
+    <EmbeddedResource Remove="Pages\RightPages\**" />
+    <None Remove="Pages\LeftPages\**" />
+    <None Remove="Pages\RightPages\**" />
+    <Page Remove="Pages\LeftPages\**" />
+    <Page Remove="Pages\RightPages\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\LeftPages\" />
-    <Folder Include="Pages\RightPages\" />
+    <ProjectReference Include="..\Buisness\Buisness.csproj" />
+    <ProjectReference Include="..\IO\IO.csproj" />
   </ItemGroup>
 
 </Project>
