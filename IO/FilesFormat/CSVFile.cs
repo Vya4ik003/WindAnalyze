@@ -1,13 +1,12 @@
-﻿using IO.FileReaders;
-using IO.Information;
-using System;
+﻿using System;
 using System.IO;
 
 namespace IO.FilesFormat
 {
     internal class CSVFile : BaseFile
     {
-        public override IOResult ReadFile(FileStream stream, ReadData data)
+        //TODO: Сделать метод рабочим
+        public override IOResult GetIOResultFromFile(FileStream stream)
         {
             throw new NotImplementedException();
         }

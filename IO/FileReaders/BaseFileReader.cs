@@ -1,25 +1,45 @@
 ﻿using ExcelDataReader;
-using IO.Information;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace IO.FileReaders
 {
     abstract class BaseFileReader
     {
-        internal abstract IExcelDataReader DataReader { get; set; }
+        /// <summary>
+        /// Номер столбца с датой измерения
+        /// </summary>
+        protected int DateColumm { get; set; }
 
-        internal abstract ReadData Data { get; set; }
+        /// <summary>
+        /// Номер столбца с типом ветра измерения
+        /// </summary>
+        protected int DDWindColumn { get; set; }
 
-        public abstract Measure[] ReadRows(int countOfRows);
+        /// <summary>
+        /// Экземлпяр класса IExcelDataReader
+        /// </summary>
+        internal IExcelDataReader DataReader { get; set; }
 
-        public abstract Measure[][] ReadPeriods(Measure[] allMeasures);
+        /// <summary>
+        /// Получает пару "Массив измерений" - "Массив информационных строк"
+        /// </summary>
+        /// <returns>(Measure[], string[])</returns>
+        public abstract (Measure[], string[]) ReadFile();
 
-        public abstract int RowCount { get; }
+        /// <summary>
+        /// Читает информационные строки
+        /// </summary>
+        /// <returns>string[]</returns>
+        protected abstract string[] ReadInfoRows();
 
-        public abstract string GetString(int column);
+        /// <summary>
+        /// Находит номера строк для Времени измерения и для типа ветра
+        /// </summary>
+        protected abstract void FindColumns();
 
-        public abstract (string[], int) SkipRowsAndGetInfoRows();
+        /// <summary>
+        /// Читает все строки файла (кроме информационных) и выделяет Measure[]
+        /// </summary>
+        /// <returns>Measure[]</returns>
+        protected abstract Measure[] ReadMeasures();
     }
 }

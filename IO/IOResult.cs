@@ -1,8 +1,4 @@
-﻿using IO.Information;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Newtonsoft.Json.Linq;
 
 namespace IO
 {
@@ -14,20 +10,25 @@ namespace IO
         public string Message { get; set; }
 
         /// <summary>
-        /// Информация, о файле
+        /// Все измерениея
         /// </summary>
-        public FileInformation InformationAboutFile { get; set; }
+        public Measure[] Measures { get; set; }
+
+        /// <summary>
+        /// Первые строки файла, содержащие информацию
+        /// </summary>
+        public string[] InformationRows { get; set; }
 
         /// <summary>
         /// Инициализирует новый обьект класса Result, если не возникло исключения при открытии файла
         /// </summary>
         /// <param name="message">Сообщение</param>
-        /// <param name="infoAboutFile">Информация о файле</param>
-        /// <param name="infoAboutPeriods">Информация о всех периодах</param>
-        public IOResult(JToken message, FileInformation infoAboutFile)
+        /// <param name="measures">Измерения</param>
+        public IOResult(JToken message, Measure[] measures, string[] infoRows)
         {
             Message = message.ToString();
-            InformationAboutFile = infoAboutFile;
+            Measures = measures;
+            InformationRows = infoRows;
         }
 
         /// <summary>

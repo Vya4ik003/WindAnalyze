@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace IO.Information
+namespace IO
 {
     public struct Measure
     {
@@ -21,9 +19,9 @@ namespace IO.Information
         /// </summary>
         /// <param name="measureDate">Время измерения</param>
         /// <param name="ddColumn">Направление ветра</param>
-        public Measure(string measureDate, string ddColumn)
+        public Measure(DateTime measureDate, string ddColumn)
         {
-            MeasureTime = DateTime.Parse(measureDate);
+            MeasureTime = measureDate;
             DD = ddColumn;
         }
 

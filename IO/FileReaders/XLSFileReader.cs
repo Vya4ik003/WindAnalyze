@@ -1,107 +1,92 @@
 ﻿using ExcelDataReader;
-using IO.Information;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace IO.FileReaders
 {
     class XLSFileReader : BaseFileReader
     {
-        internal override ReadData Data { get; set; }
 
-        internal override IExcelDataReader DataReader { get; set; }
-
+        /// <summary>
+        /// Инициализирует новый экземпляр типа XLSFileReader
+        /// </summary>
+        /// <param name="stream">Поток открытия файла</param>
         public XLSFileReader(FileStream stream)
         {
             DataReader = ExcelReaderFactory.CreateReader(stream);
             DataReader.Read();
         }
 
-        public override Measure[] ReadRows(int countOfRows)
+        public override (Measure[], string[]) ReadFile()
         {
-            Measure[] measures = new Measure[countOfRows];
+            string[] allInfoRows = ReadInfoRows();
+            FindColumns();
+            Measure[] allMeasures = ReadMeasures();
 
-            int currentRow = 0;
-            do
-            {
-                string measureDate = DataReader.GetString(Data.DateColumn);
-                string ddColumn = DataReader.GetString(Data.WindTypeColumn);
-                measures[currentRow] = new Measure(measureDate, ddColumn);
-
-                currentRow++;
-            }
-            while (DataReader.Read());
-
-            return measures;
+            return (allMeasures, allInfoRows);
         }
 
-        public override Measure[][] ReadPeriods(Measure[] allMeasures)
+        protected override string[] ReadInfoRows()
         {
-            IOrderedEnumerable<int> years = allMeasures.Select(_ => _.MeasureTime.Year).Distinct().OrderBy(_ => _);
-            Measure[][] allPeriodsMeasures = new Measure[years.Count()][];
+            List<string> informationRows = new List<string>();
 
-            int indexOfPeriod = 0;
-            foreach(int year in years)
+            while (DataReader.GetString(0).StartsWith("#"))
             {
-                var periodMeasures = allMeasures.Where(_ => _.MeasureTime.Year == year);
-                allPeriodsMeasures[indexOfPeriod] = periodMeasures.ToArray();
-
-                indexOfPeriod++;
-            }
-
-            return allPeriodsMeasures;
-        }
-
-        public override int RowCount => DataReader.RowCount;
-
-        public override string GetString(int column) => DataReader.GetString(column);
-
-        public override (string[], int) SkipRowsAndGetInfoRows()
-        {
-            List<string> information = new List<string>();
-            int informationRowCount = 0;
-
-            for (; IsContainsInfo(DataReader.GetString(0)); informationRowCount++)
-            {
-                information.Add(DataReader.GetString(0));
+                informationRows.Add(DataReader.GetString(0));
                 DataReader.Read();
             }
 
-            return (information.ToArray(), informationRowCount);
+            return informationRows.ToArray();
         }
 
-        public int[] FindColumns()
+        protected override void FindColumns()
         {
-            int[] columns = new int[2];
-            //Когда GetValue(i) вернёт null, произойдёт выход из цикла
+            int dateTimeColumn = 0;
+            int ddWindColumn = 0;
+
             try
             {
                 for (int i = 0; ; i++)
                 {
-                    if (DataReader.GetValue(i).ToString().Contains("Местное время"))
+                    string columnName = DataReader.GetString(i);
+
+                    if (columnName.Contains("Местное время"))
                     {
-                        columns[0] = i;
+                        dateTimeColumn = i;
                     }
-                    else if (DataReader.GetValue(i).ToString().Contains("DD"))
+                    else if (columnName.Contains("DD"))
                     {
-                        columns[1] = i;
+                        ddWindColumn = i;
                         break;
                     }
                 }
             }
-            catch { }
+            catch
+            {
+            }
 
             DataReader.Read();
-            return columns;
+
+            DateColumm = dateTimeColumn;
+            DDWindColumn = ddWindColumn;
         }
 
-        private bool IsContainsInfo(string cell)
+        protected override Measure[] ReadMeasures()
         {
-            return cell.StartsWith("#");
-        }
+            List<Measure> measures = new List<Measure>();
 
+            while (DataReader.Read())
+            {
+                string stringDate = DataReader.GetString(DateColumm);
+                string dd = DataReader.GetString(DDWindColumn);
+                DateTime date = DateTime.Parse(stringDate);
+
+                Measure currentMeasure = new Measure(date, dd);
+                measures.Add(currentMeasure);
+            }
+
+            return measures.ToArray();
+        }
     }
 }

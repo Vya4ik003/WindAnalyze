@@ -1,11 +1,6 @@
-﻿using ExcelDataReader;
-using IO.FilesFormat;
-using IO.Information;
+﻿using IO.FilesFormat;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace IO
 {
@@ -16,8 +11,7 @@ namespace IO
         /// </summary>
         /// <param name="filePath">Путь к файлу</param>
         /// <param name="messages">Системные сообщения</param>
-        /// <returns>Возвращает IOResult</returns>
-        //TODO: Сделать чтение CSV файла
+        /// <returns>Возвращает IOResult с информационными строками и массивом измерений</returns>
         public IOResult ReadFile(string filePath, JObject messages)
         {
             FileStream stream;
@@ -30,13 +24,12 @@ namespace IO
                 return new IOResult(message: messages["IOexception"].ToString());
             }
             
-            ReadData readData = new ReadData() { Messages = messages };
             IOResult result;
 
             if (filePath.EndsWith(".xls") || filePath.EndsWith(".xlsx"))
-                result = new XLSFile().ReadFile(stream, readData);
+                result = new XLSFile().GetIOResultFromFile(stream);
             else
-                result = new CSVFile().ReadFile(stream, readData);
+                result = new CSVFile().GetIOResultFromFile(stream);
 
             stream.Close();
             return result;
