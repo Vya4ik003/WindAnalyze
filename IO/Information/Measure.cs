@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace IO
+namespace IO.Information
 {
     public struct Measure
     {

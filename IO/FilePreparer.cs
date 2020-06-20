@@ -11,10 +11,6 @@ namespace IO
 {
     public class FilePreparer
     {
-        private int _dateColumn = 0;
-        private int _windTypeColumn = 6;
-        private int _informationRowCount = 6;
-
         /// <summary>
         /// Чтение файла и получение IEnumerable через IOResult
         /// </summary>
@@ -34,8 +30,9 @@ namespace IO
                 return new IOResult(message: messages["IOexception"].ToString());
             }
             
-            ReadData readData = new ReadData(_dateColumn, _windTypeColumn, _informationRowCount) { Messages = messages };
+            ReadData readData = new ReadData() { Messages = messages };
             IOResult result;
+
             if (filePath.EndsWith(".xls") || filePath.EndsWith(".xlsx"))
                 result = new XLSFile().ReadFile(stream, readData);
             else

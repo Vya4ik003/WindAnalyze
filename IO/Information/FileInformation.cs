@@ -17,6 +17,7 @@ namespace IO.Information
         public string Encoding;
         public string Site;
         public Measure[] AllMeasures;
+        public PeriodInformation[] PeriodsInformation;
 
         /// <summary>
         /// Инициализирует новый экземпляр класса FileInformation

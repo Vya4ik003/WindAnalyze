@@ -9,29 +9,35 @@ using System.Text;
 
 namespace IO.FilesFormat
 {
-    internal class XLSFile : IFile
+    internal class XLSFile : BaseFile
     {
-        public IOResult ReadFile(FileStream stream, ReadData data)
+        public override IOResult ReadFile(FileStream stream, ReadData readData)
         {
             XLSFileReader fileReader = new XLSFileReader(stream);
 
             var firstCell = fileReader.GetString(0);
             var rowCount = IsContainsInfo(firstCell) ? fileReader.RowCount - 7 : HasHeaders(firstCell) ? fileReader.RowCount - 1 : fileReader.RowCount;
 
-            Measure[] fileMeasures = new Measure[rowCount];
+            
 
             (string[], int) infoRowsTuple = fileReader.SkipRowsAndGetInfoRows();
 
-            var columns = data.FindColumns(fileReader.ExcelDataReader);
+            var columns = fileReader.FindColumns();
+            readData.DateColumn = columns[0];
+            readData.WindTypeColumn = columns[1];
 
             fileReader.Data = new ReadData(columns[0], columns[1], infoRowsTuple.Item2);
 
             FileInformation fileInformation = GetInfroFromHeaderRows(infoRowsTuple.Item1, rowCount);
-            fileMeasures = fileReader.ReadRows(rowCount);
+
+            Measure[] fileMeasures = fileReader.ReadRows(rowCount);
+            Measure[][] periodsMeasures = fileReader.ReadPeriods(fileMeasures);
+
             fileInformation.AllMeasures = fileMeasures.OrderBy(_ => _.MeasureTime).ToArray();
+            fileInformation.PeriodsInformation = GetPeriodInformationFromArray(periodsMeasures);
 
             return new IOResult(
-                message: data.Messages["Success"],
+                message: readData.Messages["Success"],
                 infoAboutFile: fileInformation);
         }
 
@@ -49,6 +55,7 @@ namespace IO.FilesFormat
         /// Выделяет информацию из информационных строк
         /// </summary>
         /// <param name="headerRows">Массив информациогнных строк</param>
+        /// <param name="rowCount">Кол-во строк в файле</param>
         /// <returns>Возвращает массив с выделенной информацией</returns>
         private FileInformation GetInfroFromHeaderRows(string[] headerRows, int rowCount)
         {
@@ -94,6 +101,25 @@ namespace IO.FilesFormat
                 return fileInformation;
             else
                 return null;
+        }
+
+        private PeriodInformation[] GetPeriodInformationFromArray(Measure[][] periodsMeasures)
+        {
+            PeriodInformation[] allPeriodsInformation = new PeriodInformation[periodsMeasures.Length];
+
+            int indexOfPeriodInformation = 0;
+            foreach(Measure[] period in periodsMeasures)
+            {
+                string firstDate = period.First().MeasureTime.ToString();
+                string lastDate = period.Last().MeasureTime.ToString();
+                int measureCount = period.Length;
+
+                allPeriodsInformation[indexOfPeriodInformation] = new PeriodInformation(firstDate, lastDate, measureCount, period);
+
+                indexOfPeriodInformation++;
+            }
+
+            return allPeriodsInformation;
         }
     }
 }

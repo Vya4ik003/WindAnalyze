@@ -1,11 +1,13 @@
-﻿using System;
+﻿using IO.FileReaders;
+using IO.Information;
+using System;
 using System.IO;
 
 namespace IO.FilesFormat
 {
-    internal class CSVFile : IFile
+    internal class CSVFile : BaseFile
     {
-        public IOResult ReadFile(FileStream stream, ReadData data)
+        public override IOResult ReadFile(FileStream stream, ReadData data)
         {
             throw new NotImplementedException();
         }

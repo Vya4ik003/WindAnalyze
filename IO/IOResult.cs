@@ -23,6 +23,7 @@ namespace IO
         /// </summary>
         /// <param name="message">Сообщение</param>
         /// <param name="infoAboutFile">Информация о файле</param>
+        /// <param name="infoAboutPeriods">Информация о всех периодах</param>
         public IOResult(JToken message, FileInformation infoAboutFile)
         {
             Message = message.ToString();

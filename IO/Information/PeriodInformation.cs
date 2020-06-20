@@ -4,7 +4,7 @@ using System.Text;
 
 namespace IO.Information
 {
-    class PeriodInformation
+    public class PeriodInformation
     {
         public DateTime FirstMeasure;
         public DateTime LastMeasure;
@@ -20,12 +20,12 @@ namespace IO.Information
         /// <param name="periodMeasures">Массив измерений за период</param>
         public PeriodInformation(string firstMeasure,
             string lastMeasure,
-            string measureCount,
+            int measureCount,
             Measure[] periodMeasures)
         {
             FirstMeasure = DateTime.Parse(firstMeasure);
             LastMeasure = DateTime.Parse(lastMeasure);
-            CountOfMeasures = int.Parse(measureCount);
+            CountOfMeasures = measureCount;
             PeriodMeasures = periodMeasures;
         }
     }
