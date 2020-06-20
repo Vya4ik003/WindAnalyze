@@ -11,10 +11,10 @@ namespace UI
         /// Проводит необходимые действия для открытия чтения файла
         /// </summary>
         /// <returns>Возвращает IOResult</returns>
-        //TODO: Сделать выбор только xls/xlsx и csv файлов в OpenFileDialog
         public IOResult OpenFile()
         {
-            var dialog = new OpenFileDialog();
+            var defaultDialog = new DefaultOpenFileDialog();
+            var dialog = defaultDialog.Dialog;
 
             var resultMessages = JObject.Parse(File.ReadAllText("ResultMessages.json"));
 
@@ -27,6 +27,19 @@ namespace UI
             }
 
             return new IOResult(resultMessages["Null"].ToString());
+        }
+
+        private class DefaultOpenFileDialog
+        {
+            public OpenFileDialog Dialog;
+
+            public DefaultOpenFileDialog()
+            {
+                Dialog = new OpenFileDialog
+                {
+                    Filter = "Таблица Excel (*.xls;*.xlsx)|*.xls;*.xlsx|Текстовый файл CSV (*.csv)|*.csv",
+                };
+            }
         }
     }
 }
