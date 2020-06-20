@@ -15,14 +15,14 @@
     
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="3*"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <Frame x:Name="LeftFrame" Style="{StaticResource FrameContainer}" Content="{Binding CurrentLeftPage}" Grid.Column="0"/>
         <Frame x:Name="CenterFrame" Style="{StaticResource FrameContainer}" Content="{Binding CurrentCenterPage}" Grid.Column="1"/>
         <Frame x:Name="RightFrame" Style="{StaticResource FrameContainer}" Content="{Binding CurrentRightPage}" Grid.Column="2"/>
-        
+
     </Grid>
 </Window>

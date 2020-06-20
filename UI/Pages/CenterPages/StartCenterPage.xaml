@@ -9,6 +9,6 @@
       Title="StartPage">
 
     <Grid>
-        <Button Height="30" Width="200" Content="Открыть файл" Click="OpenFile_Click"/>
+        <Button Height="50" Width="250" Content="Открыть файл" Click="OpenFile_Click"/>
     </Grid>
 </Page>

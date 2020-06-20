@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using IO.Information;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,30 +9,24 @@ namespace IO
     public class IOResult
     {
         /// <summary>
-        /// Массив прочитанных измерений
-        /// </summary>
-        public Measure[] Measures { get; set; }
-
-        /// <summary>
         /// Сообщение результата
         /// </summary>
         public string Message { get; set; }
 
         /// <summary>
-        /// Информация, взятая с первых 6 строк файла
+        /// Информация, о файле
         /// </summary>
-        public IDictionary<string, string> HeaderRowsInfo { get; set; }
+        public FileInformation InformationAboutFile { get; set; }
 
         /// <summary>
         /// Инициализирует новый обьект класса Result, если не возникло исключения при открытии файла
         /// </summary>
-        /// <param name="measures">Массив измерений</param>
         /// <param name="message">Сообщение</param>
-        public IOResult(Measure[] measures, JToken message, IDictionary<string, string> infoFromHeaderRows)
+        /// <param name="infoAboutFile">Информация о файле</param>
+        public IOResult(JToken message, FileInformation infoAboutFile)
         {
-            Measures = measures;
             Message = message.ToString();
-            HeaderRowsInfo = infoFromHeaderRows;
+            InformationAboutFile = infoAboutFile;
         }
 
         /// <summary>

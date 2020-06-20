@@ -1,21 +1,18 @@
 ﻿using ExcelDataReader;
-using Newtonsoft.Json;
+using IO.Information;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace IO
 {
     public class FilePreparer
     {
-        //TODO: Проверка файла на номера столбцов
-        private const int _dateColumn = 0;
-        private const int _windTypeColumn = 6;
-
-        //TODO: Сделать проверку на кол-во информационных строк
-        private const int _informationRowCount = 6;
+        private int _dateColumn = 0;
+        private int _windTypeColumn = 6;
+        private int _informationRowCount = 6;
 
         /// <summary>
         /// Чтение файла и получение IEnumerable через IOResult
@@ -44,14 +41,22 @@ namespace IO
 
             Measure[] fileMeasures = new Measure[rowCount];
 
-            string[] headerRows = SkipRowsAndGetHeaderRows(fileReader);
-            IDictionary<string, string> fileInformation = GetInfroFromHeaderRows(headerRows);
-            fileMeasures = ReadRows(fileReader);
+            (string[], int) inforRowsTuple = SkipRowsAndGetInfoRows(fileReader);
+
+            //var columnCount = GetColumnCount(fileReader);
+            var columns = FindColumns(fileReader);
+
+            _dateColumn = columns[0];
+            _windTypeColumn = columns[1];
+            _informationRowCount = inforRowsTuple.Item2;
+
+            FileInformation fileInformation = GetInfroFromHeaderRows(inforRowsTuple.Item1, rowCount);
+            fileMeasures = ReadRows(fileReader, rowCount);
+            fileInformation.AllMeasures = fileMeasures.OrderBy(_ => _.MeasureTime).ToArray();
 
             return new IOResult(
-                measures: fileMeasures,
                 message: messages["Success"],
-                infoFromHeaderRows: fileInformation);
+                infoAboutFile: fileInformation);
         }
 
         /// <summary>
@@ -60,9 +65,9 @@ namespace IO
         /// <param name="measures">Массив измеренияй для измненения</param>
         /// <param name="reader">Интерфейс чтения</param>
         /// <returns>Возвращает массив прочитанных измерений</returns>
-        private Measure[] ReadRows(IExcelDataReader reader)
+        private Measure[] ReadRows(IExcelDataReader reader, int countOfRows)
         {
-            Measure[] measures = new Measure[reader.RowCount];
+            Measure[] measures = new Measure[countOfRows];
             int currentRow = 0;
             do
             {
@@ -77,7 +82,6 @@ namespace IO
             return measures;
         }
 
-        //TODO: Продвинутое чтение информации
         private bool IsContainsInfo(string cell)
         {
             return cell.Contains("#");
@@ -93,20 +97,18 @@ namespace IO
         /// </summary>
         /// <param name="reader">Интерфейс чтения</param>
         /// <returns>Возвращает массив информационных строк</returns>
-        private string[] SkipRowsAndGetHeaderRows(IExcelDataReader reader)
+        private (string[], int) SkipRowsAndGetInfoRows(IExcelDataReader reader)
         {
             string[] information = new string[_informationRowCount];
+            int informationRowCount = 0;
 
-            for (int indexOfRow = 0; !DateTime.TryParse(reader.GetString(_dateColumn), out _); indexOfRow++)
+            for (; IsContainsInfo(reader.GetString(0)); informationRowCount++)
             {
-                if (IsContainsInfo(reader.GetString(0)))
-                {
-                    information[indexOfRow] = reader.GetString(0);
-                }
+                information[informationRowCount] = reader.GetString(0);
                 reader.Read();
             }
 
-            return information;
+            return (information, informationRowCount);
         }
 
         /// <summary>
@@ -114,7 +116,7 @@ namespace IO
         /// </summary>
         /// <param name="headerRows">Массив информациогнных строк</param>
         /// <returns>Возвращает массив с выделенной информацией</returns>
-        private IDictionary<string, string> GetInfroFromHeaderRows(string[] headerRows)
+        private FileInformation GetInfroFromHeaderRows(string[] headerRows, int rowCount)
         {
             string firstRow = headerRows[0]; // # Метеостанция Москва (ВДНХ), Россия, WMO_ID=27612, выборка с 01.06.2018 по 18.06.2020, все дни
             string secondRow = headerRows[1]; // # Кодировка: UTF-8
@@ -125,27 +127,65 @@ namespace IO
             //string fifthRow = infoRows[4]; - # Обозначения метеопараметров см. по адресу http://rp5.ru/archive.php?wmo_id=27612&lang=ru
             //string sixthRow = infoRows[5]; - #
 
-            Regex regexForFirstRow = new Regex(@"Метеостанция (?<station>\D+), WMO_ID=(?<WMO_ID>\d+), выборка с (?<firstDate>\S+) по (?<lastDate>\w[^,]+), (?<type>\D+)");
-            Regex regexForSecondRow = new Regex(@"Кодировка: (?<encoding>\S+)");
-            Regex regexForThirdRow = new Regex(@"Информация предоставлена сайтом (?<siteRU>[^@]*)");
+            InformationRow firstInformationRow = new InformationRow(
+                "Метеостанция (?<...>.*), (?<...>.*)=(?<...>.*), выборка с (?<...>.*) по (?<...>.*), (?<...>.*)",
+                firstRow,
+                "station", "codeType", "code", "firstDate", "lastDate", "type");
+            InformationRow secondInformationRow = new InformationRow(
+                "Кодировка: (?<...>.*)",
+                secondRow,
+                "encoding"
+                );
+            InformationRow thirdInformationRow = new InformationRow(
+                "Информация предоставлена сайтом (?<...>.*)",
+                thirdRow,
+                "site"
+                );
 
-            Match matchForFirstRow = regexForFirstRow.Match(firstRow);
-            Match matchForSecondRow = regexForSecondRow.Match(secondRow);
-            Match matchForThirdRow = regexForThirdRow.Match(thirdRow);
+            FileInformation fileInformation = new FileInformation(
+                firstInformationRow.Output[0],
+                firstInformationRow.Output[1],
+                firstInformationRow.Output[2],
+                firstInformationRow.Output[3],
+                firstInformationRow.Output[4],
+                rowCount,
+                firstInformationRow.Output[5],
+                secondInformationRow.Output[0],
+                thirdInformationRow.Output[0]
+                );
 
-            if (matchForFirstRow.Success && matchForSecondRow.Success && matchForThirdRow.Success)
-                return new Dictionary<string, string>()
-                {
-                    {"Станция", matchForFirstRow.Result("${station}")},
-                    {"WMO_ID", matchForFirstRow.Result("${WMO_ID}") },
-                    {"Первое измерение", matchForFirstRow.Result("${firstDate}") },
-                    {"Последнее измерение", matchForFirstRow.Result("${lastDate}") },
-                    {"Выборка",  matchForFirstRow.Result("${type}") },
-                    {"Кодировка", matchForSecondRow.Result("${encoding}") },
-                    {"Сайт", matchForThirdRow.Result("${siteRU}") }
-                };
+            if (firstInformationRow.MatchForInformationRow.Success &&
+                secondInformationRow.MatchForInformationRow.Success &&
+                thirdInformationRow.MatchForInformationRow.Success)
+                return fileInformation;
             else
                 return null;
+        }
+
+        private int[] FindColumns(IExcelDataReader reader)
+        {
+            int[] columns = new int[2];
+            //Когда GetValue(i) вернёт null, произойдёт выход из цикла
+            try
+            {
+                for (int i = 0; ; i++)
+                {
+                    if (reader.GetValue(i).ToString().Contains("Местное время"))
+                    {
+                        columns[0] = i;
+                    }
+                    else if (reader.GetValue(i).ToString().Contains("DD"))
+                    {
+                        columns[1] = i;
+                        break;
+                    }
+                }
+            }
+            catch
+            {
+            }
+            reader.Read();
+            return columns;
         }
     }
 }

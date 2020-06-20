@@ -10,7 +10,7 @@ namespace UI.Pages.CenterPages
     /// </summary>
     public partial class StartCenterPage : Page
     {
-        private MainWindowViewModel _mainWindowViewModel;
+        private readonly MainWindowViewModel _mainWindowViewModel;
         internal StartCenterPage(MainWindowViewModel mainViewModel)
         {
             InitializeComponent();
@@ -26,8 +26,8 @@ namespace UI.Pages.CenterPages
 
             IOResult result = fileWorker.OpenFile();
 
-            if (result.Message != "Null")
-                _mainWindowViewModel.CurrentCenterPage = new AnalyzeCenterPage(_mainWindowViewModel, result);
+            //if (result.Message != "Null")
+            //    _mainWindowViewModel.CurrentCenterPage = new AnalyzeCenterPage(_mainWindowViewModel, result);
         }
     }
 }
