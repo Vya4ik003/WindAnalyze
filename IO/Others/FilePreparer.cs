@@ -1,8 +1,9 @@
 ﻿using IO.FilesFormat;
 using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
 
-namespace IO
+namespace IO.Others
 {
     public class FilePreparer
     {
@@ -12,18 +13,18 @@ namespace IO
         /// <param name="filePath">Путь к файлу</param>
         /// <param name="messages">Системные сообщения</param>
         /// <returns>Возвращает IOResult с информационными строками и массивом измерений</returns>
-        public IOResult ReadFile(string filePath, JObject messages)
+        public IOResult PrepareFile(string filePath)
         {
             FileStream stream;
             try
             {
                 stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
             }
-            catch (IOException)
+            catch (Exception e)
             {
-                return new IOResult(message: messages["IOexception"].ToString());
+                return new IOResult(message: e.Message);
             }
-            
+
             IOResult result;
 
             if (filePath.EndsWith(".xls") || filePath.EndsWith(".xlsx"))

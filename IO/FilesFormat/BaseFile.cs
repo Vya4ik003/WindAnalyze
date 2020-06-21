@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using IO.Others;
+using System.IO;
 
 namespace IO.FilesFormat
 {

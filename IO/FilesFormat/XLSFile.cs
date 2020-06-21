@@ -1,4 +1,5 @@
 ﻿using IO.FileReaders;
+using IO.Others;
 using Newtonsoft.Json.Linq;
 using System.IO;
 
@@ -8,15 +9,14 @@ namespace IO.FilesFormat
     {
         public override IOResult GetIOResultFromFile(FileStream stream)
         {
-            JObject messages = JObject.Parse(File.ReadAllText("ResultMessages.json"));
             XLSFileReader fileReader = new XLSFileReader(stream);
 
             (Measure[], string[]) infoPair = fileReader.ReadFile();
 
             return new IOResult(
-                messages["Success"],
-                infoPair.Item1,
-                infoPair.Item2
+                message: "Success",
+                measures: infoPair.Item1,
+                infoRows: infoPair.Item2
                 );
         }
     }

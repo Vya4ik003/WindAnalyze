@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace IO
+namespace IO.Others
 {
     public class IOResult
     {

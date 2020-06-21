@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IO
+namespace IO.Others
 {
     public struct Measure
     {

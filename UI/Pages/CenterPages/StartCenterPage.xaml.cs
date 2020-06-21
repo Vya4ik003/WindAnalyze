@@ -1,7 +1,8 @@
-﻿using IO;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using UI.ViewModels;
+using Buisness;
+using IO.Others;
 
 namespace UI.Pages.CenterPages
 {
@@ -22,12 +23,11 @@ namespace UI.Pages.CenterPages
         //TODO: Сделать окно с сообщением о загрузке
         private void OpenFile_Click(object sender, RoutedEventArgs e)
         {
-            FileWorker fileWorker = new FileWorker();
+            Interaction interaction = new Interaction();
 
-            IOResult result = fileWorker.OpenFile();
+            IOResult result = interaction.OpenFile();
 
-            //if (result.Message != "Null")
-            //    _mainWindowViewModel.CurrentCenterPage = new AnalyzeCenterPage(_mainWindowViewModel, result);
+            BLResult blResult = interaction.GetStatistic(result);
         }
     }
 }

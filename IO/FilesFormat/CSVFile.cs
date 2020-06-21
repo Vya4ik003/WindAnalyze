@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IO.Others;
+using System;
 using System.IO;
 
 namespace IO.FilesFormat
@@ -8,7 +9,7 @@ namespace IO.FilesFormat
         //TODO: Сделать метод рабочим
         public override IOResult GetIOResultFromFile(FileStream stream)
         {
-            throw new NotImplementedException();
+            return new IOResult(new NotImplementedException().Message);
         }
     }
 }
