@@ -1,8 +1,10 @@
-﻿using System.Windows;
+﻿using IO;
+using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
+using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using UI.ViewModels;
-using Buisness;
-using IO.Others;
 
 namespace UI.Pages.CenterPages
 {
@@ -23,11 +25,24 @@ namespace UI.Pages.CenterPages
         //TODO: Сделать окно с сообщением о загрузке
         private void OpenFile_Click(object sender, RoutedEventArgs e)
         {
-            Interaction interaction = new Interaction();
+            ReadFileResult readFileResult = OpenAndReadFile();
 
-            IOResult result = interaction.OpenFile();
+            if (!readFileResult.IsSuccess)
+                MessageBox.Show(readFileResult.ErrorMessage);
+        }
 
-            BLResult blResult = interaction.GetStatistic(result);
+        private ReadFileResult OpenAndReadFile()
+        {
+            JObject appConfig = JObject.Parse(File.ReadAllText("AppConfig.json"));
+            string dialogFilter = appConfig["OpenFileDialogFilter"].ToString();
+            OpenFileDialog openDialog = new OpenFileDialog() { Filter = dialogFilter };
+
+            if (openDialog.ShowDialog() == true)
+            {
+                return ReadFileResult.GetResult(openDialog.FileName);
+            }
+
+            return ReadFileResult.EmptyResult;
         }
     }
 }
