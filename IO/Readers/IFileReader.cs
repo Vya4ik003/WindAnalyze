@@ -6,6 +6,10 @@ namespace IO.Readers
 {
     interface IFileReader
     {
+        /// <summary>
+        /// Метод для получения результата чтения
+        /// </summary>
+        /// <returns>Результат чтения</returns>
         ReadFileResult GetReadingResult(); 
     }
 }

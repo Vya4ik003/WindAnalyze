@@ -8,6 +8,7 @@ namespace IO
 {
     public class ReadFileResult
     {
+        //TODO: Добавить вариации ошибок
         private const string _readCanceledMessaage = "Read canceled";
         public static ReadFileResult EmptyResult = new ReadFileResult(_readCanceledMessaage);
 
@@ -28,22 +29,29 @@ namespace IO
         /// </summary>
         public List<string> MeasureWindTypes { get; }
 
-        /// <summary>
-        /// Информационные строки
-        /// </summary>
-        public FileInformation FileInformation { get; }
+        public string FirstInformationRow { get; } // # Метеостанция Москва (ВДНХ), Россия, WMO_ID=27612, выборка с 01.06.2014 по 18.06.2020, все дни
+        public string SecondInformationRow { get; } // # Кодировка: UTF-8
+        public string ThirdInformationRow { get; } // # Информация предоставлена сайтом "Расписание Погоды", rp5.ru
+
+        //Следующие строки не содержат важной информации
+        //public string FourthInformationRow { get; } // # Пожалуйста, при использовании данных, любезно указывайте названный сайт.
+        //public string FifthInformationRow { get; } // # Обозначения метеопараметров см. по адресу http://rp5.ru/archive.php?wmo_id=27612&lang=ru
+        //public string SixthInformationRow { get; } // #
 
         /// <summary>
         /// Инициализирует новый экземлпяр класса ReadFileResult, если не возникло исключения
         /// </summary>
         /// <param name="measureDates"></param>
         /// <param name="measureWindTypes"></param>
-        /// <param name="fileInfo"></param>
-        public ReadFileResult(List<DateTime> measureDates, List<string> measureWindTypes, FileInformation fileInfo)
+        /// <param name="informationRows"></param>
+        public ReadFileResult(List<DateTime> measureDates, List<string> measureWindTypes, List<string> informationRows)
         {
             MeasureDates = measureDates;
             MeasureWindTypes = measureWindTypes;
-            FileInformation = fileInfo;
+
+            FirstInformationRow = informationRows[0];
+            SecondInformationRow = informationRows[1];
+            ThirdInformationRow = informationRows[2];
 
             IsSuccess = true;
         }
@@ -59,6 +67,11 @@ namespace IO
             IsSuccess = false;
         }
 
+       /// <summary>
+       /// Метод для чтения файла и получения результата
+       /// </summary>
+       /// <param name="filePath">Путь к файлу</param>
+       /// <returns>Результат чтения</returns>
         public static ReadFileResult GetResult(string filePath)
         {
             try

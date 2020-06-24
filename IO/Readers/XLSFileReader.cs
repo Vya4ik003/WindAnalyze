@@ -10,11 +10,29 @@ namespace IO.Readers
     {
         private IExcelDataReader XlsFileReader { get; }
 
+        /// <summary>
+        /// Индекс столбца с датой измерения
+        /// </summary>
         private int _dateTimeColumnIndex;
+
+        /// <summary>
+        /// Индекс столбца с типом ветра
+        /// </summary>
         private int _ddColumnIndex;
 
-        private List<string> AllInfoRows { get; } = new List<string>();
+        /// <summary>
+        /// Информационные строки
+        /// </summary>
+        private List<string> InfoRows { get; } = new List<string>();
+
+        /// <summary>
+        /// Все даты измерений
+        /// </summary>
         private List<DateTime> AllDateTimes { get; } = new List<DateTime>();
+
+        /// <summary>
+        /// Все типы ветров
+        /// </summary>
         private List<string> AllWindTypes { get; } = new List<string>();
 
         public XLSFileReader(FileStream openFileStream)
@@ -27,11 +45,13 @@ namespace IO.Readers
             GetInfoRows();
             FindColumns();
             GetAllDateTimesAndAllWindTypes();
-            FileInformation information = new FileInformation(AllInfoRows.ToArray());
 
-            return new ReadFileResult(AllDateTimes, AllWindTypes, information);
+            return new ReadFileResult(AllDateTimes, AllWindTypes, InfoRows);
         }
 
+        /// <summary>
+        /// Получение всех информационных строк
+        /// </summary>
         private void GetInfoRows()
         {
             XlsFileReader.Read();
@@ -39,11 +59,14 @@ namespace IO.Readers
             string row = XlsFileReader.GetString(0);
             while (row.StartsWith("#") && XlsFileReader.Read())
             {
-                AllInfoRows.Add(row);
+                InfoRows.Add(row);
                 row = XlsFileReader.GetString(0);
             }
         }
 
+        /// <summary>
+        /// Поиск нужных столбцов
+        /// </summary>
         private void FindColumns()
         {
             try
@@ -68,6 +91,9 @@ namespace IO.Readers
             }
         }
 
+        /// <summary>
+        /// Получение всех дат и типов ветров
+        /// </summary>
         private void GetAllDateTimesAndAllWindTypes()
         {
             while (XlsFileReader.Read())
