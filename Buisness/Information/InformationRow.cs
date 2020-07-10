@@ -7,7 +7,7 @@ namespace Buisness.Information
     class InformationRow
     {
         private Regex Regex { get; }
-        private IEnumerable<string> NamesOfMatches { get; }
+        private IList<string> NamesOfMatches { get; }
         private Match Match { get; }
 
         public List<string> OutputMatches { get; private set; }

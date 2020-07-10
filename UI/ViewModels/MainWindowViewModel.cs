@@ -23,5 +23,7 @@ namespace UI.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public Page AnalyzeCenterPage { get; set; }
     }
 }

@@ -7,14 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Pages\LeftPages\**" />
-    <Compile Remove="Pages\RightPages\**" />
-    <EmbeddedResource Remove="Pages\LeftPages\**" />
-    <EmbeddedResource Remove="Pages\RightPages\**" />
-    <None Remove="Pages\LeftPages\**" />
-    <None Remove="Pages\RightPages\**" />
-    <Page Remove="Pages\LeftPages\**" />
-    <Page Remove="Pages\RightPages\**" />
+    <Compile Remove="Views\LeftPages\**" />
+    <Compile Remove="Views\RightPages\**" />
+    <EmbeddedResource Remove="Views\LeftPages\**" />
+    <EmbeddedResource Remove="Views\RightPages\**" />
+    <None Remove="Views\LeftPages\**" />
+    <None Remove="Views\RightPages\**" />
+    <Page Remove="Views\LeftPages\**" />
+    <Page Remove="Views\RightPages\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,9 +23,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="AppConfig.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

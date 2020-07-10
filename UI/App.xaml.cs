@@ -13,5 +13,7 @@ namespace UI
     /// </summary>
     public partial class App : Application
     {
+        public static double DefaultGridCellsThickness { get; } = 2;
+        public static double NarrowGridCellsThickness { get; } = 0;
     }
 }

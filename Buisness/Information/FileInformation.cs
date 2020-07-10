@@ -18,52 +18,54 @@ namespace Buisness.Information
         public string Encoding { get; private set; }
         public string Site { get; private set; }
 
-        public IEnumerable<Wind> Winds { get; private set; } = new List<Wind>();
-        public IEnumerable<WindChange> WindChanges { get; private set; } = new List<WindChange>();
+        public IList<WindType> WindTypes { get; private set; }
+        private IList<Wind> Winds { get; }
+        public IList<WindChange> WindChanges { get; private set; }
 
         public FileInformation(List<DateTime> windTimes, List<string> windTypes, string[] informationRows)
         {
             Winds = GetWinds(windTimes, windTypes);
             GetFileInfo(informationRows.ToList());
-           WindChanges =  GetWindChanges();
+            WindChanges = GetWindChanges();
+            WindTypes = GetWindTypes();
         }
 
         /// <summary>
         /// Метод для получения информации о периодах
         /// </summary>
         /// <returns>Информация о периодах</returns>
-        public IEnumerable<PeriodInformation> GetPeriodsInformation()
+        public IList<PeriodInformation> GetPeriodsInformation()
         {
             IEnumerable<int> years = Winds.Select(_ => _.WindDate.Year).Distinct();
-            IEnumerable<PeriodInformation> periodsInfos = new List<PeriodInformation>(years.Count());
+            IList<PeriodInformation> periodsInfos = new List<PeriodInformation>(years.Count());
 
             foreach (int year in years)
             {
-                IEnumerable<Wind> periodWinds = Winds.Where(_ => _.WindDate.Year == year).OrderBy(_=>_.WindDate);
+                IList<Wind> periodWinds = Winds.Where(_ => _.WindDate.Year == year).OrderBy(_ => _.WindDate).ToList();
                 PeriodInformation periodInfo = new PeriodInformation(periodWinds);
 
-                periodsInfos = periodsInfos.Concat(new[] { periodInfo });
+                periodsInfos.Add(periodInfo);
             }
 
-            return periodsInfos.ToList();
+            return periodsInfos;
         }
 
         /// <summary>
         /// Метод для получения статистики
         /// </summary>
-        private IEnumerable<WindChange> GetWindChanges()
+        private IList<WindChange> GetWindChanges()
         {
             int windsCount = Winds.Count() - 1;
-            IEnumerable<WindChange> windChanges = new List<WindChange>(windsCount);
+            IList<WindChange> windChanges = new List<WindChange>(windsCount);
             for (int i = 0; i < windsCount; i++)
             {
                 Wind currentWind = Winds.ElementAt(i);
                 Wind nextWind = Winds.ElementAt(i + 1);
                 WindChange windChange = new WindChange(currentWind, nextWind);
 
-                windChanges = windChanges.Concat(new[] { windChange});
+                windChanges.Add(windChange);
             }
-            return windChanges.ToList();
+            return windChanges;
         }
 
         /// <summary>
@@ -72,7 +74,7 @@ namespace Buisness.Information
         /// <param name="dates">Список дат</param>
         /// <param name="winds">Список направлений ветров</param>
         /// <returns>Возвращает списко ветров</returns>
-        private IEnumerable<Wind> GetWinds(List<DateTime> dates, List<string> winds)
+        private IList<Wind> GetWinds(List<DateTime> dates, List<string> winds)
         {
             //TODO: сделать проверку на равенство массивов
             int windCount = dates.Count;
@@ -131,6 +133,11 @@ namespace Buisness.Information
                 );
 
             Site = thirdInformationRow.OutputMatches[0];
+        }
+
+        private IList<WindType> GetWindTypes()
+        {
+            return Winds.Select(_ => _.WindType).Distinct().OrderBy(_=>(int)_).ToList();
         }
     }
 }

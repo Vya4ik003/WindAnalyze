@@ -28,14 +28,14 @@ namespace Buisness
         /// <summary>
         /// Список информации о периодах
         /// </summary>
-        public IEnumerable<PeriodInformation> PeriodInformations { get; } = new List<PeriodInformation>();
+        public IList<PeriodInformation> PeriodInformations { get; } = new List<PeriodInformation>();
 
         /// <summary>
         /// Инициализирует новый экземпляр класса CreateSTatisticResult, если не возникло исключения
         /// </summary>
         /// <param name="fileInfo">Информация о файле</param>
         /// <param name="periodInfos">Список информации о периоде</param>
-        public CreateStatisticResult(FileInformation fileInfo, IEnumerable<PeriodInformation> periodInfos)
+        public CreateStatisticResult(FileInformation fileInfo, IList<PeriodInformation> periodInfos)
         {
             FileInformation = fileInfo;
             PeriodInformations = periodInfos;
@@ -65,9 +65,12 @@ namespace Buisness
             try
             {
                 FileInformation fileInformation = new FileInformation(dateTimes, windTypes, informationRows);
-                IEnumerable<PeriodInformation> periodsInfo = fileInformation.GetPeriodsInformation();
-                Wind.WindVariativeList = windTypes.Select(_ => _.MapToWind()).Distinct().OrderBy(_=>(int)_).ToList();
-                Wind.SetWindVariativeCount();
+                IList<PeriodInformation> periodsInfo = fileInformation.GetPeriodsInformation();
+                Wind.WindVariativeList = windTypes
+                    .Select(_ => _.MapToWind())
+                    .Distinct()
+                    .OrderBy(_=>(int)_)
+                    .ToList();
 
                 return new CreateStatisticResult(fileInformation, periodsInfo);
             }

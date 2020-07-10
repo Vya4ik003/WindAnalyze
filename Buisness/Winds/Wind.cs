@@ -8,14 +8,7 @@ namespace Buisness.Winds
 {
     public struct Wind
     {
-        //TODO: Проверить свойство на необходимость
-        public static int WindVariativeCount { get; private set; }
-
-        public static void SetWindVariativeCount()
-        {
-            WindVariativeCount = WindVariativeList.Count();
-        }
-        public static IEnumerable<WindType> WindVariativeList = new List<WindType>();
+        public static IList<WindType> WindVariativeList = new List<WindType>();
 
         /// <summary>
         /// Время измерения ветра
