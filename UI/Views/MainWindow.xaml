@@ -14,9 +14,9 @@
     
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
 
         <Frame x:Name="LeftFrame" Style="{StaticResource FrameContainer}" Content="{Binding CurrentLeftPage}" Grid.Column="0"/>

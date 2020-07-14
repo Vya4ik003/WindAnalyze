@@ -7,6 +7,24 @@ namespace UI.ViewModels.PagesViewModel.CenterPagesViewModels
 {
     class AnalyzeCenterPageViewModel : BaseViewModel
     {
+        public ICommand ShowHideTitles
+        {
+            get
+            {
+                return new RelayCommand(() =>
+                {
+                    if (TitlesSize == _showenTitlesSize)
+                    {
+                        TitlesSize = _hiddenTitlesSize;
+                    }
+                    else
+                    {
+                        TitlesSize = _showenTitlesSize;
+                    }
+                });
+            }
+        }
+
         public AnalyzeCenterPageViewModel(IList<string> windHeaders, IList<double> windValues)
         {
             WindHeaders = windHeaders;
@@ -37,6 +55,23 @@ namespace UI.ViewModels.PagesViewModel.CenterPagesViewModels
             set
             {
                 _windValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private static readonly double _showenTitlesSize = 70;
+        private readonly double _hiddenTitlesSize = 0;
+
+        private double _titlesSize = _showenTitlesSize;
+        public double TitlesSize
+        {
+            get
+            {
+                return _titlesSize;
+            }
+            set
+            {
+                _titlesSize = value;
                 OnPropertyChanged();
             }
         }

@@ -25,14 +25,19 @@ namespace UI.Bindables.Properties
         {
             _sourceGrid = sourceObject as Grid;
 
+            if (_sourceGrid.Children.Count > 1)
+            {
+                _sourceGrid.Children.RemoveRange(1, _sourceGrid.Children.Count - 1);
+            }
+
             IList<string> newHeaders = e.NewValue as IList<string>;
             CreateDefinition(newHeaders.Count() + 1);
             FillHeaders(newHeaders);
 
-            var hiddenButton = new Button();
-            Grid.SetColumn(hiddenButton, 0);
-            Grid.SetRow(hiddenButton, 0);
-            _sourceGrid.Children.Add(hiddenButton);
+            //var hiddenButton = new Button();
+            //Grid.SetColumn(hiddenButton, 0);
+            //Grid.SetRow(hiddenButton, 0);
+            //_sourceGrid.Children.Add(hiddenButton);
         }
 
         public static void SetHeaders(DependencyObject sourceObject, IList<string> value)
@@ -47,7 +52,7 @@ namespace UI.Bindables.Properties
 
         private static void CreateDefinition(int sizeOfGrid)
         {
-            bool isEmpty = _sourceGrid.Children.Count == 0;
+            bool isEmpty = _sourceGrid.Children.Count == 1;
             if (isEmpty)
             {
                 for (int i = 0; i < sizeOfGrid; i++)

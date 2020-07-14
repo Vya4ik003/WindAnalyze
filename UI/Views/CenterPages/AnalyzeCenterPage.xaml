@@ -13,7 +13,7 @@
     <Page.Resources>
         <GridLength x:Key="HeightWidthForRectangles">70</GridLength>
         <GridLength x:Key="EmptyHeightWidthForRectangles">0</GridLength>
-        <system:Double x:Key="FontSize">30</system:Double>
+        <system:Double x:Key="TitleFontSize">30</system:Double>
 
         <Style x:Key="RectanglesBorderStyle" TargetType="Border">
             <Setter Property="BorderBrush" Value="{StaticResource MainColor}"/>
@@ -23,24 +23,30 @@
         <Style x:Key="TitleStyle" TargetType="Label">
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="{StaticResource FontSize}"/>
+            <Setter Property="FontSize" Value="{StaticResource TitleFontSize}"/>
+        </Style>
+
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Command" Value="{Binding ShowHideTitles}"/>
         </Style>
 
     </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="{StaticResource HeightWidthForRectangles}"/>
+            <RowDefinition Height="{Binding TitlesSize}"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{StaticResource HeightWidthForRectangles}"/>
+            <ColumnDefinition Width="{Binding TitlesSize}"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <Grid behaviors:GridHeadersBehavior.Headers="{Binding WindHeaders}"
           behaviors:GridValuesBehavior.Values="{Binding WindValues}"
-              Grid.Row="1" Grid.Column="1"/>
+              Grid.Row="1" Grid.Column="1">
+            <Button Style="{StaticResource ButtonStyle}" Grid.Column="0" Grid.Row="0"/>
+        </Grid>
 
         <Border Style="{StaticResource RectanglesBorderStyle}"  Grid.ColumnSpan="2" Margin="62 0 0 0">
             <Label Content="Ветер сменился на" Style="{StaticResource TitleStyle}"/>
