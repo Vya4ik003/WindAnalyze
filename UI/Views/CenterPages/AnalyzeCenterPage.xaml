@@ -3,8 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:behaviors="clr-namespace:UI.Behaviors"
-      xmlns:systemParameters="clr-namespace:System;assembly=System.Runtime"
+      xmlns:behaviors="clr-namespace:UI.Bindables.Properties"
+      xmlns:system="clr-namespace:System;assembly=System.Runtime"
       mc:Ignorable="d" 
       x:Name="AnalyzeCenterPageName"
       d:DesignHeight="450" d:DesignWidth="800"
@@ -12,10 +12,18 @@
 
     <Page.Resources>
         <GridLength x:Key="HeightWidthForRectangles">70</GridLength>
+        <GridLength x:Key="EmptyHeightWidthForRectangles">0</GridLength>
+        <system:Double x:Key="FontSize">30</system:Double>
 
         <Style x:Key="RectanglesBorderStyle" TargetType="Border">
             <Setter Property="BorderBrush" Value="{StaticResource MainColor}"/>
             <Setter Property="BorderThickness" Value="{StaticResource BorderThickness}"/>
+        </Style>
+
+        <Style x:Key="TitleStyle" TargetType="Label">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="{StaticResource FontSize}"/>
         </Style>
 
     </Page.Resources>
@@ -35,7 +43,7 @@
               Grid.Row="1" Grid.Column="1"/>
 
         <Border Style="{StaticResource RectanglesBorderStyle}"  Grid.ColumnSpan="2" Margin="62 0 0 0">
-            <Label Content="Ветер сменился на" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Label Content="Ветер сменился на" Style="{StaticResource TitleStyle}"/>
         </Border>
 
         <Border Style="{StaticResource RectanglesBorderStyle}"  Grid.RowSpan="2" Margin="0 62 0 0">
@@ -44,9 +52,7 @@
                     <RotateTransform Angle="-90"/>
                 </TransformGroup>
             </Border.LayoutTransform>
-            <Label Content="Ветер сменился с" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
-
-            </Label>
+            <Label Content="Ветер сменился с" Style="{StaticResource TitleStyle}"/>
         </Border>
 
         <Border Style="{StaticResource RectanglesBorderStyle}"/>

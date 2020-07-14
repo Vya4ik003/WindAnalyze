@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using UI.UIElements.Headers;
 
-namespace UI.Behaviors
+namespace UI.Bindables.Properties
 {
     class GridHeadersBehavior
     {

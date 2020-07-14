@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using UI.UIElements.ValueCells;
 
-namespace UI.Behaviors
+namespace UI.Bindables.Properties
 {
     class GridValuesBehavior
     {
