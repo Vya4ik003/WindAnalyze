@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using UI.Pages.CenterPages;
+using UI.Views;
 
 namespace UI.ViewModels
 {
@@ -24,6 +25,36 @@ namespace UI.ViewModels
             }
         }
 
+        private Page _currentLeftPage;
+        public Page CurrentLeftPage
+        {
+            get
+            {
+                return _currentLeftPage;
+            }
+            set
+            {
+                _currentLeftPage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Page _currentRightPage;
+        public Page CurrentRightPage
+        {
+            get
+            {
+                return _currentRightPage;
+            }
+            set
+            {
+                _currentRightPage = value;
+                OnPropertyChanged();
+            }
+        }
+
         public Page AnalyzeCenterPage { get; set; }
+        public MenuRightPage MenuRightPage { get; set; }
+        public Page PeriodsLeftPage { get; set; }
     }
 }

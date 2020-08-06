@@ -23,6 +23,9 @@ namespace UI.UIElements.Headers
         protected Header(string headerText)
         {
             Content = headerText;
+            byte colorsByte = 228;
+            Background = new SolidColorBrush(Color.FromRgb(colorsByte, colorsByte, colorsByte));
+            FontWeight = FontWeights.Heavy;
 
             SetContentAlignment();
         }

@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Input;
 using UI.Pages.CenterPages;
 using UI.Properties;
+using UI.Views;
 
 namespace UI.ViewModels
 {
@@ -58,6 +59,12 @@ namespace UI.ViewModels
 
             _mainWindowViewModel.AnalyzeCenterPage = new AnalyzeCenterPage(windTypes, windChanges);
             _mainWindowViewModel.CurrentCenterPage = _mainWindowViewModel.AnalyzeCenterPage;
+
+            _mainWindowViewModel.MenuRightPage = new MenuRightPage(statisticResult.FileInformation.FileInformationLabels);
+            _mainWindowViewModel.CurrentRightPage = _mainWindowViewModel.MenuRightPage;
+
+            _mainWindowViewModel.PeriodsLeftPage = new PeriodsRightPage();
+            _mainWindowViewModel.CurrentLeftPage = _mainWindowViewModel.PeriodsLeftPage;
         }
 
         /// <summary>

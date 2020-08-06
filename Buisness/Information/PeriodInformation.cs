@@ -8,9 +8,11 @@ namespace Buisness.Information
 {
     public class PeriodInformation
     {
-        public DateTime FirstWindDate { get; }
-        public DateTime LastWindDate { get; }
-        public int MeasureCount { get; }
+        public IList<InformationLabel> PeriodInformationLabels { get; }
+
+        private DateTime FirstWindDate { get; }
+        private DateTime LastWindDate { get; }
+        private int MeasureCount { get; }
 
         private IList<Wind> PeriodWinds { get; } = new List<Wind>();
         public IList<WindChange> PeriodWindChanges { get; private set; } = new List<WindChange>();
@@ -22,6 +24,13 @@ namespace Buisness.Information
             MeasureCount = winds.Count();
             PeriodWinds = winds.ToList();
             PeriodWindChanges = GetWindChanges();
+
+            PeriodInformationLabels = new List<InformationLabel>
+            {
+                new InformationLabel("Первое измерение", FirstWindDate),
+                new InformationLabel("Последнее измерение", LastWindDate),
+                new InformationLabel("Кол-во измерений", MeasureCount)
+            };
         }
 
         /// <summary>

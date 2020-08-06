@@ -1,0 +1,93 @@
+﻿<Page x:Class="UI.Views.MenuRightPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+      xmlns:local="clr-namespace:UI.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" 
+      d:DesignWidth="250"
+      Width="{Binding PageWidth}"
+      Title="MenuRightPage">
+
+    <Page.Resources>
+        <Thickness x:Key="BorderThickness"
+                   Left="{StaticResource BorderThicknessDouble}"/>
+
+        <Thickness x:Key="HeaderBorder"
+                   Bottom="{StaticResource BorderThicknessDouble}"/>
+
+    </Page.Resources>
+
+    <Border BorderThickness="{StaticResource BorderThickness}" >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{StaticResource TitlesRowColumnSize}"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border BorderThickness="{StaticResource HeaderBorder}">
+                <Grid>
+                    <Button Height="40" Width="40" HorizontalAlignment="Left" Margin="11 0 0 0" Command="{Binding HideOpenMenuCommand}"/>
+                </Grid>
+            </Border>
+
+            <TextBlock Text="Файл" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"
+                           FontSize="25" RenderTransformOrigin="0.5 0.5" Margin="{StaticResource HeaderBorder}" Grid.Row="{Binding TitleRow}">
+                <TextBlock.RenderTransform>
+                    <RotateTransform Angle="{Binding TitleAngle}"/>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+
+            <StackPanel Grid.Row="1" Visibility="{Binding InformationLabelsVisibility}">
+                <StackPanel>
+                    <Label Content="Информация" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20" Height="40" Background="LightGray"/>
+
+                    <ItemsControl VerticalAlignment="Center" HorizontalAlignment="Center" ItemsSource="{Binding FileInformationLabels}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="5" TextWrapping="Wrap">
+                                <Run Text="{Binding Label, Mode=OneWay}"/>
+                                <Run Text=": "/>
+                                <Run Text="{Binding Value, Mode=OneWay}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <StackPanel>
+
+                    <Label Content="Период" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20" Height="40" Background="LightGray"/>
+
+                    <ItemsControl VerticalAlignment="Center" HorizontalAlignment="Center" ItemsSource="{Binding PeriodInformationLabels}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="5" TextWrapping="Wrap">
+                                <Run Text="{Binding Label, Mode=OneWay}"/>
+                                <Run Text=": "/>
+                                <Run Text="{Binding Value, Mode=OneWay}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </StackPanel>
+                
+            </StackPanel>
+
+        </Grid>
+    </Border>
+</Page>

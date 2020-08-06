@@ -3,20 +3,23 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Buisness.Information
 {
     public class FileInformation
     {
-        public string Meteostation { get; private set; }
-        public string MeteostationCodeType { get; private set; }
-        public string MeteostationCode { get; private set; }
-        public DateTime FirstWindDate { get; private set; }
-        public DateTime LastWindDate { get; private set; }
-        public string SampleType { get; private set; }
-        public string Encoding { get; private set; }
-        public string Site { get; private set; }
+        public IList<InformationLabel> FileInformationLabels { get; }
+
+        private string Meteostation { get; set; }
+        private string MeteostationCodeType { get; set; }
+        private string MeteostationCode { get; set; }
+        private DateTime FirstWindDate { get; set; }
+        private DateTime LastWindDate { get; set; }
+        private string SampleType { get; set; }
+        private string Encoding { get; set; }
+        private string Site { get; set; }
 
         public IList<WindType> WindTypes { get; private set; }
         private IList<Wind> Winds { get; }
@@ -28,6 +31,18 @@ namespace Buisness.Information
             GetFileInfo(informationRows.ToList());
             WindChanges = GetWindChanges();
             WindTypes = GetWindTypes();
+
+            FileInformationLabels = new List<InformationLabel>
+            {
+                new InformationLabel("Метеостанция", Meteostation),
+                new InformationLabel(MeteostationCodeType, MeteostationCode),
+                new InformationLabel("Первое измерение", FirstWindDate),
+                new InformationLabel("Последнее измерение", LastWindDate),
+                new InformationLabel("Кол-во измерений", Winds.Count),
+                new InformationLabel("Выборка", SampleType),
+                new InformationLabel("Кодировка", Encoding),
+                new InformationLabel("Сайт", Site)
+            };
         }
 
         /// <summary>
@@ -137,7 +152,7 @@ namespace Buisness.Information
 
         private IList<WindType> GetWindTypes()
         {
-            return Winds.Select(_ => _.WindType).Distinct().OrderBy(_=>(int)_).ToList();
+            return Winds.Select(_ => _.WindType).Distinct().OrderBy(_ => (int)_).ToList();
         }
     }
 }

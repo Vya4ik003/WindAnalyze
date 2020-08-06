@@ -59,7 +59,7 @@ namespace UI.ViewModels.PagesViewModel.CenterPagesViewModels
             }
         }
 
-        private static readonly double _showenTitlesSize = 70;
+        private static readonly double _showenTitlesSize = App.TitlesRowColumnSize;
         private readonly double _hiddenTitlesSize = 0;
 
         private double _titlesSize = _showenTitlesSize;

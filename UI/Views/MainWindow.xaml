@@ -4,12 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" WindowState="Maximized">
+        Title="MainWindow" Height="450" Width="800" WindowState="Maximized"
+        BorderThickness="{StaticResource WindowBorderThickness}"
+        BorderBrush="{StaticResource MainColor}">
 
     <Window.Resources>
         <Style x:Key="FrameContainer" TargetType="Frame">
             <Setter Property="NavigationUIVisibility" Value="Hidden"/>
         </Style>
+
+
     </Window.Resources>
     
     <Grid>
