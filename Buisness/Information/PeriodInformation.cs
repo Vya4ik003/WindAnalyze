@@ -14,22 +14,25 @@ namespace Buisness.Information
         private DateTime LastWindDate { get; }
         private int MeasureCount { get; }
 
+        public int Year { get; }
         private IList<Wind> PeriodWinds { get; } = new List<Wind>();
         public IList<WindChange> PeriodWindChanges { get; private set; } = new List<WindChange>();
 
-        public PeriodInformation(IList<Wind> winds)
+        public PeriodInformation(IList<Wind> winds, int year)
         {
             FirstWindDate = winds.First().WindDate;
             LastWindDate = winds.Last().WindDate;
             MeasureCount = winds.Count();
             PeriodWinds = winds.ToList();
             PeriodWindChanges = GetWindChanges();
+            Year = year;
 
             PeriodInformationLabels = new List<InformationLabel>
             {
                 new InformationLabel("Первое измерение", FirstWindDate),
                 new InformationLabel("Последнее измерение", LastWindDate),
-                new InformationLabel("Кол-во измерений", MeasureCount)
+                new InformationLabel("Кол-во измерений", MeasureCount),
+                new InformationLabel("Год", Year)
             };
         }
 

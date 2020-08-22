@@ -12,6 +12,7 @@
       Title="MenuRightPage">
 
     <Page.Resources>
+        
         <Thickness x:Key="BorderThickness"
                    Left="{StaticResource BorderThicknessDouble}"/>
 
@@ -28,7 +29,7 @@
             </Grid.RowDefinitions>
             <Border BorderThickness="{StaticResource HeaderBorder}">
                 <Grid>
-                    <Button Height="40" Width="40" HorizontalAlignment="Left" Margin="11 0 0 0" Command="{Binding HideOpenMenuCommand}"/>
+                    <Button Height="{StaticResource SquareButtonsSize}" Width="{StaticResource SquareButtonsSize}" HorizontalAlignment="Left" Margin="8 0 0 0" Command="{Binding HideOpenMenuCommand}"/>
                 </Grid>
             </Border>
 

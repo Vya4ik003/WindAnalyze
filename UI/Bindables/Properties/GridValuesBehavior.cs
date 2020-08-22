@@ -21,6 +21,10 @@ namespace UI.Bindables.Properties
         {
             Grid grid = sourceObject as Grid;
 
+            //TODO: Сделать оптимизацию - вместо удаления ячеек сделать замену контента (если возможно, и если нужно)
+            grid.Children.OfType<ValueCell>().ToList().ForEach(_ => grid.Children.Remove(_));
+            
+
             IList<double> newValues = e.NewValue as IList<double>;
             double count = Math.Sqrt(newValues.Count);
 

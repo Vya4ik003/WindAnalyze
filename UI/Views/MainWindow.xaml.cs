@@ -22,8 +22,6 @@ namespace UI
             _mainWindowViewModel = new MainWindowViewModel();
 
             DataContext = _mainWindowViewModel;
-
-
         }
     }
 }

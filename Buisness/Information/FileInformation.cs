@@ -57,7 +57,7 @@ namespace Buisness.Information
             foreach (int year in years)
             {
                 IList<Wind> periodWinds = Winds.Where(_ => _.WindDate.Year == year).OrderBy(_ => _.WindDate).ToList();
-                PeriodInformation periodInfo = new PeriodInformation(periodWinds);
+                PeriodInformation periodInfo = new PeriodInformation(periodWinds, year);
 
                 periodsInfos.Add(periodInfo);
             }

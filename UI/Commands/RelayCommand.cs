@@ -7,8 +7,8 @@ namespace UI
 {
     class RelayCommand : ICommand
     {
-        private Action _execute;
-        private Func<object, bool> _canExecute;
+        private readonly Action<object> _execute;
+        private readonly Func<object, bool> _canExecute;
 
         public event EventHandler CanExecuteChanged
         {
@@ -16,7 +16,7 @@ namespace UI
             remove { CommandManager.RequerySuggested += value; }
         }
 
-        public RelayCommand(Action action, Func<object, bool> canExecuteAction = null)
+        public RelayCommand(Action<object> action, Func<object, bool> canExecuteAction = null)
         {
             _execute = action;
             _canExecute = canExecuteAction;
@@ -29,7 +29,7 @@ namespace UI
 
         public void Execute(object _)
         {
-            _execute();
+            _execute(_);
         }
     }
 }

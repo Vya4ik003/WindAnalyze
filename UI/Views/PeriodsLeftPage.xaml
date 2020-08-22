@@ -1,0 +1,83 @@
+﻿<Page x:Class="UI.Views.PeriodsLeftPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:UI.Views"
+      xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="250"
+      Width="250"
+      Title="PeriodsRightPage">
+
+    <Page.Resources>
+
+        <Thickness x:Key="ButtonPanelThickness" Bottom="{StaticResource BorderThicknessDouble}"/>
+
+        <Thickness x:Key="PeriodsPageThickness" Right="{StaticResource BorderThicknessDouble}"/>
+
+    </Page.Resources>
+
+    <Border BorderBrush="{StaticResource MainColor}" BorderThickness="{StaticResource PeriodsPageThickness}">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{StaticResource TitlesRowColumnSize}"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" BorderBrush="{StaticResource MainColor}" BorderThickness="{StaticResource ButtonPanelThickness}">
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Margin="8 8 4 8" Grid.Column="0" Command="{Binding GoToPreviousPeriod}"/>
+                    <Button Margin="4 8 8 8" Grid.Column="1" Command="{Binding GoToNextPeriod}"/>
+
+                </Grid>
+
+            </Border>
+
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding Periods}">
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+
+                            <CheckBox Grid.Column="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
+                                   Margin="8 8 8 0" 
+                                    Content="{Binding}"
+                                    FontSize="20"
+                                   Height="40" >
+                                
+                                <CheckBox.InputBindings>
+                                    <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.GoToCurrentPeriod, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
+                                                  CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type CheckBox}}}"/>
+                                </CheckBox.InputBindings>
+                                
+                            </CheckBox>
+
+                            <!--<Button Grid.Column="1" Margin="4 8 8 0" Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
+                                   Background="LightGray"/>-->
+
+                        </Grid>
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+            </ItemsControl>
+
+        </Grid>
+
+    </Border>
+</Page>

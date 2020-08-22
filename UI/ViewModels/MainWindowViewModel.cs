@@ -55,6 +55,6 @@ namespace UI.ViewModels
 
         public Page AnalyzeCenterPage { get; set; }
         public MenuRightPage MenuRightPage { get; set; }
-        public Page PeriodsLeftPage { get; set; }
+        public PeriodsLeftPage PeriodsLeftPage { get; set; }
     }
 }

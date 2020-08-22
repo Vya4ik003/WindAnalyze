@@ -20,21 +20,21 @@ namespace UI.ViewModels.PagesViewModel
         {
             get
             {
-                return new RelayCommand(() =>
+                return new RelayCommand((_) =>
                 {
                     if (_isOpenPage)
                     {
-                        PageWidth = _rolledRightPageWidth;
-                        TitleAngle = _verticalTitleAngle;
-                        TitleRow = _verticalTitleRow;
-                        InformationLabelsVisibility = _hiddenInformationLabelsVisibility;
+                        PageWidth = RolledRightPageWidth;
+                        TitleAngle = VerticalTitleAngle;
+                        TitleRow = VerticalTitleRow;
+                        InformationLabelsVisibility = HiddenInformationLabelsVisibility;
                     }
                     else
                     {
-                        PageWidth = _openRightPageWidth;
-                        TitleAngle = _horizontalTitleAngle;
-                        TitleRow = _horizontalTitleRow;
-                        InformationLabelsVisibility = _showenInformationLabelsVisibility;
+                        PageWidth = OpenRightPageWidth;
+                        TitleAngle = HorizontalTitleAngle;
+                        TitleRow = HorizontalTitleRow;
+                        InformationLabelsVisibility = ShowenInformationLabelsVisibility;
                     }
 
                     _isOpenPage = !_isOpenPage;
@@ -42,11 +42,11 @@ namespace UI.ViewModels.PagesViewModel
             }
         }
 
-        private double _rolledRightPageWidth { get; } = App.TitlesRowColumnSize;
-        private static double _openRightPageWidth { get; } = 250;
+        private double RolledRightPageWidth { get; } = App.TitlesRowColumnSize;
+        private static double OpenRightPageWidth { get; } = 250;
         private bool _isOpenPage = true;
 
-        private double _pageWidth = _openRightPageWidth;
+        private double _pageWidth = OpenRightPageWidth;
         public double PageWidth
         {
             get
@@ -60,11 +60,11 @@ namespace UI.ViewModels.PagesViewModel
             }
         }
 
-        private double _horizontalTitleAngle { get; } = 0;
-        private double _verticalTitleAngle { get; } = 90;
+        private double HorizontalTitleAngle { get; } = 0;
+        private double VerticalTitleAngle { get; } = 90;
 
-        private int _horizontalTitleRow { get; } = 0;
-        private int _verticalTitleRow { get; } = 1;
+        private int HorizontalTitleRow { get; } = 0;
+        private int VerticalTitleRow { get; } = 1;
 
         private double _titleAngle;
         public double TitleAngle
@@ -122,10 +122,10 @@ namespace UI.ViewModels.PagesViewModel
             }
         }
 
-        private Visibility _hiddenInformationLabelsVisibility { get; } = Visibility.Collapsed;
-        private static Visibility _showenInformationLabelsVisibility { get; } = Visibility.Visible;
+        private Visibility HiddenInformationLabelsVisibility { get; } = Visibility.Collapsed;
+        private static Visibility ShowenInformationLabelsVisibility { get; } = Visibility.Visible;
 
-        private Visibility _informationLabelsVisibility = _showenInformationLabelsVisibility;
+        private Visibility _informationLabelsVisibility = ShowenInformationLabelsVisibility;
         public Visibility InformationLabelsVisibility
         {
             get

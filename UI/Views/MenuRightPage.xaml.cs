@@ -1,6 +1,7 @@
 ﻿using Buisness.Information;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,7 +21,7 @@ namespace UI.Views
     /// </summary>
     public partial class MenuRightPage : Page
     {
-        private RightPageViewModel _viewModel;
+        private static RightPageViewModel _viewModel;
         public MenuRightPage(IList<InformationLabel> labels)
         {
             InitializeComponent();
@@ -28,9 +29,19 @@ namespace UI.Views
             DataContext = _viewModel;
         }
 
-        public void ChangeInformationLabel(IList<InformationLabel> periodInformation)
+        public static void ChangeInformationLabel(IList<InformationLabel> periodInformation)
         {
             _viewModel.PeriodInformationLabels = periodInformation;
+        }
+
+        public static bool CheckCurrentYear(string year)
+        {
+            return _viewModel.PeriodInformationLabels?.Where(_ => _.Value == year).Count() > 0;
+        }
+
+        public static int GetCurrentYear()
+        {
+            return int.Parse(_viewModel.PeriodInformationLabels.First(_ => _.Label == "год").Value);
         }
     }
 }

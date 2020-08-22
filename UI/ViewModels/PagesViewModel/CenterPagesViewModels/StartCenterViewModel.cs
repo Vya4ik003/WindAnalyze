@@ -24,7 +24,7 @@ namespace UI.ViewModels
         {
             get
             {
-                return new RelayCommand(() => OpenFile());
+                return new RelayCommand((_) => OpenFile());
             }
         }
 
@@ -63,7 +63,7 @@ namespace UI.ViewModels
             _mainWindowViewModel.MenuRightPage = new MenuRightPage(statisticResult.FileInformation.FileInformationLabels);
             _mainWindowViewModel.CurrentRightPage = _mainWindowViewModel.MenuRightPage;
 
-            _mainWindowViewModel.PeriodsLeftPage = new PeriodsRightPage();
+            _mainWindowViewModel.PeriodsLeftPage = new PeriodsLeftPage(statisticResult.FileInformation, statisticResult.PeriodInformations);
             _mainWindowViewModel.CurrentLeftPage = _mainWindowViewModel.PeriodsLeftPage;
         }
 

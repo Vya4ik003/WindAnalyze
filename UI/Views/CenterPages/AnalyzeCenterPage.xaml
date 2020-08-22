@@ -23,6 +23,7 @@
 
         <Thickness x:Key="TopTitleMarginThickness"
                    Left="{StaticResource TitlesMargin}"/>
+        
         <Thickness x:Key="LeftTitleMarginThickness"
                    Top="{StaticResource TitlesMargin}"/>
 
@@ -36,7 +37,8 @@
 
         <Thickness x:Key="TopTitleBorderThickness"
                    Bottom="{StaticResource BorderThicknessDouble}"
-                   Left="{StaticResource BorderThicknessDouble}"/>
+                   Left="{StaticResource BorderThicknessDouble}"
+                   />
 
         <Style x:Key="RectanglesBorderStyle" TargetType="Border">
             <Setter Property="BorderBrush" Value="{StaticResource MainColor}"/>
@@ -82,7 +84,10 @@
             <Label Content="Ветер сменился с..." Style="{StaticResource TitleStyle}" Padding="0 0 0 10"/>
         </Border>
 
-        <Border BorderThickness="{StaticResource CubeBorderThickness}"/>
+        <!--<Border BorderThickness="{StaticResource CubeBorderThickness}">
+            <Button Height="{StaticResource SquareButtonsSize}" Width="{StaticResource SquareButtonsSize}"
+                    Command="{Binding ShowHideLeftPage}"/>
+        </Border>-->
 
     </Grid>
 

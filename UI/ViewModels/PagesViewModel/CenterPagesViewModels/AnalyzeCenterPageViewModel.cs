@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
+using UI.Views;
 
 namespace UI.ViewModels.PagesViewModel.CenterPagesViewModels
 {
@@ -11,7 +12,7 @@ namespace UI.ViewModels.PagesViewModel.CenterPagesViewModels
         {
             get
             {
-                return new RelayCommand(() =>
+                return new RelayCommand((_) =>
                 {
                     if (TitlesSize == _showenTitlesSize)
                     {
@@ -75,5 +76,16 @@ namespace UI.ViewModels.PagesViewModel.CenterPagesViewModels
                 OnPropertyChanged();
             }
         }
+
+        //public ICommand ShowHideLeftPage
+        //{
+        //    get
+        //    {
+        //        return new RelayCommand(() =>
+        //        {
+        //            PeriodsLeftPage.CHangePageWidth();
+        //        });
+        //    }
+        //}
     }
 }
