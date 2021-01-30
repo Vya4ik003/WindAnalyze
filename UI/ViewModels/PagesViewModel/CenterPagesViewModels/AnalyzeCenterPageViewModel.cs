@@ -1,7 +1,17 @@
-﻿using System;
+﻿using Buisness;
+using Buisness.Winds;
+using IO;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using UI.Pages.CenterPages;
+using UI.Properties;
 using UI.Views;
 
 namespace UI.ViewModels.PagesViewModel.CenterPagesViewModels
@@ -14,13 +24,17 @@ namespace UI.ViewModels.PagesViewModel.CenterPagesViewModels
             {
                 return new RelayCommand((_) =>
                 {
+                    Button b = (Button)_;
+                    RotateTransform tr = b.RenderTransform as RotateTransform;
                     if (TitlesSize == _showenTitlesSize)
                     {
                         TitlesSize = _hiddenTitlesSize;
+                        tr.Angle = 180;
                     }
                     else
                     {
                         TitlesSize = _showenTitlesSize;
+                        tr.Angle = 0;
                     }
                 });
             }
@@ -76,16 +90,5 @@ namespace UI.ViewModels.PagesViewModel.CenterPagesViewModels
                 OnPropertyChanged();
             }
         }
-
-        //public ICommand ShowHideLeftPage
-        //{
-        //    get
-        //    {
-        //        return new RelayCommand(() =>
-        //        {
-        //            PeriodsLeftPage.CHangePageWidth();
-        //        });
-        //    }
-        //}
     }
 }

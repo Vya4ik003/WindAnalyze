@@ -1,11 +1,5 @@
-﻿using Buisness;
-using IO;
-using Microsoft.Win32;
-using Newtonsoft.Json.Linq;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using UI.ViewModels;
+﻿using System.Windows.Controls;
+using UI.ViewModels.PagesViewModel.CenterPagesViewModels;
 
 namespace UI.Pages.CenterPages
 {
@@ -14,10 +8,10 @@ namespace UI.Pages.CenterPages
     /// </summary>
     public partial class StartCenterPage : Page
     {
-        internal StartCenterPage(MainWindowViewModel mainViewModel)
+        internal StartCenterPage()
         {
             InitializeComponent();
-            DataContext = new StartCenterViewModel(mainViewModel);
+            DataContext = new StartCenterPageViewModel();
         }
     }
 }

@@ -10,7 +10,7 @@ using UI.Views;
 
 namespace UI.ViewModels.PagesViewModel
 {
-    class PeriodsLeftPageViewModel : BaseViewModel
+    public class PeriodsLeftPageViewModel : BaseViewModel
     {
         public ICommand GoToNextPeriod
         {
@@ -21,12 +21,8 @@ namespace UI.ViewModels.PagesViewModel
                     _indexOfPeriod++;
                     string content = _checkedPeriods[_indexOfPeriod].Content.ToString();
                     string year = content.Substring(0, content.IndexOf(" "));
-                    PeriodInformation currentPeriodInfo = _periodInformations.FirstOrDefault(_ => _.Year.ToString().Equals(year));
-                    IList<WindChange> windChanges = currentPeriodInfo.PeriodWindChanges;
-                    IList<double> currentValues = WindChange.GetWindChangesValues(windChanges);
 
-                    AnalyzeCenterPage.SetWindValues(currentValues);
-                    MenuRightPage.ChangeInformationLabel(currentPeriodInfo?.PeriodInformationLabels);
+                    ToggleValuesAndInfo(year);
                 },
                 (_) => _checkedPeriods.Count() > 1 && _indexOfPeriod < _checkedPeriods.Count - 1);
             }
@@ -41,12 +37,8 @@ namespace UI.ViewModels.PagesViewModel
                     _indexOfPeriod--;
                     string content = _checkedPeriods[_indexOfPeriod].Content.ToString();
                     string year = content.Substring(0, content.IndexOf(" "));
-                    PeriodInformation currentPeriodInfo = _periodInformations.FirstOrDefault(_ => _.Year.ToString().Equals(year));
-                    IList<WindChange> windChanges = currentPeriodInfo.PeriodWindChanges;
-                    IList<double> currentValues = WindChange.GetWindChangesValues(windChanges);
 
-                    AnalyzeCenterPage.SetWindValues(currentValues);
-                    MenuRightPage.ChangeInformationLabel(currentPeriodInfo?.PeriodInformationLabels);
+                    ToggleValuesAndInfo(year);
                 },
                 (_) => _checkedPeriods.Count() > 1 && _indexOfPeriod > 0);
             }
@@ -88,9 +80,10 @@ namespace UI.ViewModels.PagesViewModel
 
                     IList<double> currentValues = WindChange.GetWindChangesValues(windChanges);
 
+                    MainWindowViewModel viewModel = MainWindowViewModel.GetInstance();
 
-                    AnalyzeCenterPage.SetWindValues(currentValues);
-                    MenuRightPage.ChangeInformationLabel(currentPeriodInfo?.PeriodInformationLabels);
+                    viewModel.AnalyzeCenterPage.SetWindValues(currentValues);
+                    viewModel.MenuRightPage.ChangeInformationLabel(currentPeriodInfo?.PeriodInformationLabels);
                 });
             }
         }
@@ -99,12 +92,33 @@ namespace UI.ViewModels.PagesViewModel
         {
             _fileInformation = fileInformation;
             _periodInformations = periodInformation;
+            SetPeriods();
+        }
 
-            Periods = _periodInformations.Select(_ => _.Year.ToString() + " год").OrderBy(_ => _).ToList();
+        public void SetInformations(FileInformation fileInformation, IList<PeriodInformation> periodInformation)
+        {
+            _fileInformation = fileInformation;
+            _periodInformations = periodInformation;
+            SetPeriods();
         }
 
         private FileInformation _fileInformation;
+        internal FileInformation FileInformation
+        {
+            set
+            {
+                _fileInformation = value;
+            }
+        }
+
         private IList<PeriodInformation> _periodInformations;
+        internal IList<PeriodInformation> PeriodInformations
+        {
+            set
+            {
+                _periodInformations = value;
+            }
+        }
 
         private IList<string> _periods;
         public IList<string> Periods
@@ -113,48 +127,30 @@ namespace UI.ViewModels.PagesViewModel
             {
                 return _periods;
             }
-            set
+            private set
             {
                 _periods = value;
                 OnPropertyChanged();
             }
         }
+        public void SetPeriods()
+        {
+            Periods = _periodInformations.Select(_ => _.Year.ToString() + " год").OrderBy(_ => _).ToList();
+        }
 
         private IList<CheckBox> _checkedPeriods = new List<CheckBox>();
         private int _indexOfPeriod;
 
-        //private double _hiddenPageWidth { get; } = 0;
-        //private static double _showenPageWidth { get; } = 250;
+        private void ToggleValuesAndInfo(string year)
+        {
+            PeriodInformation currentPeriodInfo = _periodInformations.FirstOrDefault(_ => _.Year.ToString().Equals(year));
+            IList<WindChange> windChanges = currentPeriodInfo.PeriodWindChanges;
+            IList<double> currentValues = WindChange.GetWindChangesValues(windChanges);
 
-        //private bool IsHiddenPage()
-        //{
-        //    return PageWidth == _showenPageWidth;
-        //}
+            MainWindowViewModel mainViewModel = MainWindowViewModel.GetInstance();
 
-        //public void ChangePageWidth()
-        //{
-        //    if (IsHiddenPage())
-        //    {
-        //        PageWidth = _hiddenPageWidth;
-        //    }
-        //    else
-        //    {
-        //        PageWidth = _showenPageWidth;
-        //    }
-        //}
-
-        //private double _pageWidth = _showenPageWidth;
-        //public double PageWidth
-        //{
-        //    get
-        //    {
-        //        return _pageWidth;
-        //    }
-        //    set
-        //    {
-        //        _pageWidth = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
+            mainViewModel.AnalyzeCenterPage.SetWindValues(currentValues);
+            mainViewModel.MenuRightPage.ChangeInformationLabel(currentPeriodInfo?.PeriodInformationLabels);
+        }
     }
 }

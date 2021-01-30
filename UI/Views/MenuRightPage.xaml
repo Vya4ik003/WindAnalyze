@@ -29,7 +29,8 @@
             </Grid.RowDefinitions>
             <Border BorderThickness="{StaticResource HeaderBorder}">
                 <Grid>
-                    <Button Height="{StaticResource SquareButtonsSize}" Width="{StaticResource SquareButtonsSize}" HorizontalAlignment="Left" Margin="8 0 0 0" Command="{Binding HideOpenMenuCommand}"/>
+                    <Button Height="{StaticResource SquareButtonsSize}" Width="{StaticResource SquareButtonsSize}" 
+                            HorizontalAlignment="Left" Margin="8 0 0 0" Command="{Binding HideOpenMenuCommand}"/>
                 </Grid>
             </Border>
 
@@ -67,6 +68,8 @@
 
                     <Label Content="Период" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20" Height="40" Background="LightGray"/>
 
+                    <Label Content="Нет выбранного периода" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Visibility="{Binding NoPeriodLabelVisibility}"/>
+
                     <ItemsControl VerticalAlignment="Center" HorizontalAlignment="Center" ItemsSource="{Binding PeriodInformationLabels}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -86,7 +89,9 @@
                     </ItemsControl>
 
                 </StackPanel>
-                
+
+                <Button Content="Открыть файл" Height="40" Command="{Binding OpenFileCommand}" FontSize="15"/>
+
             </StackPanel>
 
         </Grid>

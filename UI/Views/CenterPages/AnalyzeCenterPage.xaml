@@ -51,6 +51,9 @@
             <Setter Property="FontSize" Value="{StaticResource TitleFontSize}"/>
         </Style>
 
+        <Image x:Key="LeftTopArrow" Source="../../Images/left-top-arrow.png"/>
+
+
     </Page.Resources>
 
     <Grid>
@@ -68,7 +71,11 @@
           behaviors:GridValuesBehavior.Values="{Binding WindValues}"
               Grid.Row="1" Grid.Column="1">
 
-            <Button Grid.Column="0" Grid.Row="0" Command="{Binding ShowHideTitles}"/>
+            <Button Grid.Column="0" Grid.Row="0" Command="{Binding ShowHideTitles}" CommandParameter="{Binding RelativeSource={RelativeSource self}}" Content="{StaticResource LeftTopArrow}" RenderTransformOrigin="0.5,0.5" >
+                <Button.RenderTransform>
+                    <RotateTransform Angle="0"/>
+                </Button.RenderTransform>
+            </Button>
         </Grid>
 
         <Border BorderThickness="{StaticResource TopTitleBorderThickness}"  Grid.ColumnSpan="2" Margin="{StaticResource TopTitleMarginThickness}">
@@ -83,11 +90,6 @@
             </Border.LayoutTransform>
             <Label Content="Ветер сменился с..." Style="{StaticResource TitleStyle}" Padding="0 0 0 10"/>
         </Border>
-
-        <!--<Border BorderThickness="{StaticResource CubeBorderThickness}">
-            <Button Height="{StaticResource SquareButtonsSize}" Width="{StaticResource SquareButtonsSize}"
-                    Command="{Binding ShowHideLeftPage}"/>
-        </Border>-->
 
     </Grid>
 

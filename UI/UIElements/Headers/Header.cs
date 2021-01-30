@@ -46,5 +46,10 @@ namespace UI.UIElements.Headers
         {
             _rowColumnIndex++;
         }
+
+        public static void ResetCounter()
+        {
+            _rowColumnIndex = 1;
+        }
     }
 }

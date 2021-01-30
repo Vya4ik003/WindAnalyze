@@ -28,6 +28,9 @@ namespace UI.Bindables.Properties
             if (_sourceGrid.Children.Count > 1)
             {
                 _sourceGrid.Children.RemoveRange(1, _sourceGrid.Children.Count - 1);
+                _sourceGrid.ColumnDefinitions.Clear();
+                _sourceGrid.RowDefinitions.Clear();
+                Header.ResetCounter();
             }
 
             IList<string> newHeaders = e.NewValue as IList<string>;

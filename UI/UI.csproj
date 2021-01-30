@@ -6,6 +6,10 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>5</WarningLevel>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Views\LeftPages\**" />
     <Compile Remove="Views\RightPages\**" />
@@ -18,8 +22,26 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Buisness\Buisness.csproj" />
-    <ProjectReference Include="..\IO\IO.csproj" />
+    <None Remove="Images\left-arrow.png" />
+    <None Remove="Images\left-top-arrow.png" />
+    <None Remove="Images\right-arrow.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Backend\Backend.csproj" />
+    <ProjectReference Include="..\IOFr\IO.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\left-arrow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\left-top-arrow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\right-arrow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

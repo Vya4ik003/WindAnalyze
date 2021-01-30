@@ -29,19 +29,9 @@ namespace UI.Views
             DataContext = _viewModel;
         }
 
-        public static void ChangeInformationLabel(IList<InformationLabel> periodInformation)
+        public void ChangeInformationLabel(IList<InformationLabel> periodInformation)
         {
             _viewModel.PeriodInformationLabels = periodInformation;
-        }
-
-        public static bool CheckCurrentYear(string year)
-        {
-            return _viewModel.PeriodInformationLabels?.Where(_ => _.Value == year).Count() > 0;
-        }
-
-        public static int GetCurrentYear()
-        {
-            return int.Parse(_viewModel.PeriodInformationLabels.First(_ => _.Label == "год").Value);
         }
     }
 }

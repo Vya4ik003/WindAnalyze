@@ -1,16 +1,70 @@
-﻿using Buisness.Information;
+﻿using Buisness;
+using Buisness.Information;
+using Buisness.Winds;
+using IO;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
+using UI.Pages.CenterPages;
+using UI.Properties;
 
 namespace UI.ViewModels.PagesViewModel
 {
     class RightPageViewModel : BaseViewModel
     {
+
+        public ICommand OpenFileCommand
+        {
+            get
+            {
+                return new RelayCommand((_) => OpenFile());
+            }
+        }
+
+
+        private void OpenFile()
+        {
+            ReadFileResult readResult = GetReadResult();
+
+            if (!readResult.IsSuccess)
+            {
+                MessageBox.Show(readResult.ErrorMessage);
+                return;
+            }
+
+            CreateStatisticResult statisticResult = CreateStatisticResult.GetStatistic(
+                readResult.MeasureDates, readResult.MeasureWindTypes, readResult.FirstInformationRow,
+                readResult.SecondInformationRow, readResult.ThirdInformationRow);
+
+            IList<string> windTypes = statisticResult.FileInformation.WindTypes.Select(_ => _.ToString()).ToList();
+            IList<double> windChanges = WindChange.GetWindChangesValues(statisticResult.FileInformation.WindChanges);
+
+            MainWindowViewModel mainViewModel = MainWindowViewModel.GetInstance();
+
+            mainViewModel.AnalyzeCenterPage.SetWindHeaders(windTypes);
+            mainViewModel.AnalyzeCenterPage.SetWindValues(windChanges);
+            mainViewModel.PeriodsLeftPage.SetInformations(fileInformation: statisticResult.FileInformation, periodInformation: statisticResult.PeriodInformations);
+        }
+
+        private ReadFileResult GetReadResult()
+        {
+            string dialogFilter = Resources.OpenFileDialogFilter;
+            OpenFileDialog openDialog = new OpenFileDialog() { Filter = dialogFilter };
+
+            if (openDialog.ShowDialog() == true)
+            {
+                return ReadFileResult.GetResult(openDialog.FileName);
+            }
+
+            return ReadFileResult.EmptyResult;
+        }
+
         public RightPageViewModel(IList<InformationLabel> fileInfoLabels)
         {
             FileInformationLabels = fileInfoLabels;
@@ -27,14 +81,14 @@ namespace UI.ViewModels.PagesViewModel
                         PageWidth = RolledRightPageWidth;
                         TitleAngle = VerticalTitleAngle;
                         TitleRow = VerticalTitleRow;
-                        InformationLabelsVisibility = HiddenInformationLabelsVisibility;
+                        InformationLabelsVisibility = CollapsedVisibility;
                     }
                     else
                     {
                         PageWidth = OpenRightPageWidth;
                         TitleAngle = HorizontalTitleAngle;
                         TitleRow = HorizontalTitleRow;
-                        InformationLabelsVisibility = ShowenInformationLabelsVisibility;
+                        InformationLabelsVisibility = VisibleVisibility;
                     }
 
                     _isOpenPage = !_isOpenPage;
@@ -94,6 +148,7 @@ namespace UI.ViewModels.PagesViewModel
             }
         }
 
+
         private IList<InformationLabel> _fileInformationLabels;
         public IList<InformationLabel> FileInformationLabels
         {
@@ -118,14 +173,24 @@ namespace UI.ViewModels.PagesViewModel
             set
             {
                 _periodInformationLabels = value;
+
+                if (_periodInformationLabels == null)
+                {
+                    NoPeriodLabelVisibility = VisibleVisibility;
+                }
+                else
+                {
+                    NoPeriodLabelVisibility = CollapsedVisibility;
+                }
+
                 OnPropertyChanged();
             }
         }
 
-        private Visibility HiddenInformationLabelsVisibility { get; } = Visibility.Collapsed;
-        private static Visibility ShowenInformationLabelsVisibility { get; } = Visibility.Visible;
+        private static Visibility CollapsedVisibility { get; } = Visibility.Collapsed;
+        private static Visibility VisibleVisibility { get; } = Visibility.Visible;
 
-        private Visibility _informationLabelsVisibility = ShowenInformationLabelsVisibility;
+        private Visibility _informationLabelsVisibility = VisibleVisibility;
         public Visibility InformationLabelsVisibility
         {
             get
@@ -135,6 +200,20 @@ namespace UI.ViewModels.PagesViewModel
             set
             {
                 _informationLabelsVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Visibility _noPeriodLabelVisibility = VisibleVisibility;
+        public Visibility NoPeriodLabelVisibility
+        {
+            get
+            {
+                return _noPeriodLabelVisibility;
+            }
+            set
+            {
+                _noPeriodLabelVisibility = value;
                 OnPropertyChanged();
             }
         }

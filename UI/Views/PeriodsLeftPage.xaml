@@ -16,6 +16,10 @@
 
         <Thickness x:Key="PeriodsPageThickness" Right="{StaticResource BorderThicknessDouble}"/>
 
+        <Image x:Key="LeftArrow"  Source="../../Images/left-arrow.png"/>
+
+        <Image x:Key="RightArrow" Source="../../Images/right-arrow.png"/>
+
     </Page.Resources>
 
     <Border BorderBrush="{StaticResource MainColor}" BorderThickness="{StaticResource PeriodsPageThickness}">
@@ -35,8 +39,8 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Margin="8 8 4 8" Grid.Column="0" Command="{Binding GoToPreviousPeriod}"/>
-                    <Button Margin="4 8 8 8" Grid.Column="1" Command="{Binding GoToNextPeriod}"/>
+                    <Button Margin="8 8 4 8" Grid.Column="0" Command="{Binding GoToPreviousPeriod}" Content="Назад"/>
+                    <Button Margin="4 8 8 8" Grid.Column="1" Command="{Binding GoToNextPeriod}" Content="Вперёд"/>
 
                 </Grid>
 

@@ -6,9 +6,12 @@ namespace UI.ViewModels
 {
     internal class MainWindowViewModel : BaseViewModel
     {
+        private static MainWindowViewModel _mainWindowViewModel;
+
         internal MainWindowViewModel()
         {
-            CurrentCenterPage = new StartCenterPage(this);
+            _mainWindowViewModel = this;
+            CurrentCenterPage = new StartCenterPage();
         }
 
         private Page _currentCenterPage;
@@ -53,8 +56,10 @@ namespace UI.ViewModels
             }
         }
 
-        public Page AnalyzeCenterPage { get; set; }
+        public AnalyzeCenterPage AnalyzeCenterPage { get; set; }
         public MenuRightPage MenuRightPage { get; set; }
         public PeriodsLeftPage PeriodsLeftPage { get; set; }
+
+        internal static MainWindowViewModel GetInstance() => _mainWindowViewModel;
     }
 }

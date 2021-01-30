@@ -10,7 +10,7 @@ namespace UI.Pages.CenterPages
     /// </summary>
     public partial class AnalyzeCenterPage : Page
     {
-        private static AnalyzeCenterPageViewModel _analyzeCenterPageViewModel;
+        private AnalyzeCenterPageViewModel _analyzeCenterPageViewModel;
         internal AnalyzeCenterPage(IList<string> headers, IList<double> values)
         {
             InitializeComponent();
@@ -18,9 +18,14 @@ namespace UI.Pages.CenterPages
             DataContext = _analyzeCenterPageViewModel;
         }
 
-        public static void SetWindValues(IList<double> values)
+        public void SetWindValues(IList<double> values)
         {
             _analyzeCenterPageViewModel.WindValues = values;
+        }
+
+        public void SetWindHeaders(IList<string> values)
+        {
+            _analyzeCenterPageViewModel.WindHeaders = values;
         }
     }
 }

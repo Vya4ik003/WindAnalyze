@@ -31,14 +31,11 @@ namespace UI.Views
             DataContext = _periodsPageViewModel;
         }
 
-        public static void SetPeriods(IList<string> periods)
+        public void SetInformations(FileInformation fileInformation, IList<PeriodInformation> periodInformation)
         {
-            _periodsPageViewModel.Periods = periods;
+            _periodsPageViewModel.FileInformation = fileInformation;
+            _periodsPageViewModel.PeriodInformations = periodInformation;
+            _periodsPageViewModel.SetPeriods();
         }
-
-        //public static void CHangePageWidth()
-        //{
-        //    _periodsPageViewModel.ChangePageWidth();
-        //}
     }
 }
